@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NZ Housing Affordability Crisis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ── DESIGN TOKENS ── */
+:root,[data-theme="light"]{
+  --font-sans:'Instrument Sans',system-ui,sans-serif;
+  --font-mono:'DM Mono','Courier New',monospace;
+  --font-display:'Playfair Display',Georgia,serif;
+  --bg:#EEF0F4;--surface:#F9FAFB;--sf2:#F1F3F7;--sf3:#E5E8EF;
+  --ink:#0F1924;--bd:#D4D8E2;--bds:#E2E5ED;--bdi:#1E2D40;
+  --t1:#0F1924;--t2:#4A5568;--t3:#8896A8;--ti:#EEF2F8;--ti2:#9BAFC4;
+  --ac:#A8C400;--acd:#6A8A00;--acm:rgba(168,196,0,.13);--acb:rgba(168,196,0,.4);
+  --sc1:#E8EEF8;--sc2:#B8C9E8;--sc3:#6B8EC4;--sc4:#3A5FA0;--sc5:#1E3A72;--sc6:#0A1A42;
+  --cp:#2563A8;--ci:#6A9A00;--cr:#C47A1A;--cd:#7C4DC8;--cdep:#C83A3A;
+  --bq1:#C83A3A;--bq2:#C47A1A;--bq3:#7C4DC8;--bq4:#2563A8;--bq5:#6A9A00;
+  --st:#8B1E1E;--sb:#F5E8E8;--sbd:#D4AAAA;
+  --at:#2E5A00;--ab:#EBF3D8;--abd:#8AC458;
+  --et:#5C4400;--eb:#F5EDD4;--ebd:#D4B878;
+  --st2:#1A3E7C;--sb2:#E0EAF8;--sbd2:#8AAAD8;
+  --thr:#8B1E1E;--than:#8896A8;
+  --rsm:4px;--rmd:6px;--rlg:10px;--rxl:14px;--rpl:20px;
+  --shsm:0 1px 4px rgba(15,25,36,.08),0 1px 2px rgba(15,25,36,.04);
+  --shmd:0 3px 14px rgba(15,25,36,.09),0 1px 4px rgba(15,25,36,.05);
+  --ttbg:#fff;--ttbd:#D4D8E2;--ttsh:0 6px 24px rgba(15,25,36,.13),0 2px 6px rgba(15,25,36,.07);
+  --ease:cubic-bezier(.22,1,.36,1);--tf:110ms;--tb:200ms;
+}
+[data-theme="dark"]{
+  --bg:#060C14;--surface:#0C1620;--sf2:#111E2C;--sf3:#172638;
+  --ink:#060C14;--bd:#182636;--bds:#111E2C;--bdi:#0A1624;
+  --t1:#E4EEF8;--t2:#5E7A98;--t3:#324A62;--ti:#0C1620;--ti2:#324A62;
+  --acd:#C4E000;--acm:rgba(168,196,0,.10);--acb:rgba(168,196,0,.25);
+  --sc1:#142030;--sc2:#183268;--sc3:#2050A8;--sc4:#3A78D8;--sc5:#68A2EC;--sc6:#A8C400;
+  --cp:#5A9AE8;--ci:#A8C400;--cr:#E8A840;--cd:#AA7AE8;--cdep:#E85050;
+  --bq1:#E85050;--bq2:#E8A840;--bq3:#AA7AE8;--bq4:#5A9AE8;--bq5:#A8C400;
+  --st:#F08080;--sb:#1C0C0C;--sbd:#4A2020;
+  --at:#A8C400;--ab:#0C1808;--abd:#2A4010;
+  --et:#E8C870;--eb:#181208;--ebd:#3A3010;
+  --st2:#7AAAE8;--sb2:#0A1428;--sbd2:#1E3060;
+  --thr:#F08080;--than:#324A62;
+  --shsm:0 1px 4px rgba(0,0,0,.35);--shmd:0 3px 14px rgba(0,0,0,.45);
+  --ttbg:#0C1620;--ttbd:#182636;--ttsh:0 6px 24px rgba(0,0,0,.5);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-sans);font-size:13px;color:var(--t1);background:var(--bg);
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;
+  transition:background var(--tb),color var(--tb);}
+
+/* ── NAV ── */
+.nav{background:var(--ink);border-bottom:1px solid var(--bdi);flex-shrink:0;}
+.nav-top{display:flex;align-items:center;gap:12px;padding:10px 20px 8px;border-bottom:1px solid var(--bdi);}
+.logo{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--ti);letter-spacing:-.3px;line-height:1.1;}
+.logo em{font-style:italic;font-weight:500;color:var(--ac);}
+.logo-sub{font-size:9px;color:var(--ti2);font-family:var(--font-mono);margin-top:2px;letter-spacing:.3px;}
+.kbar{display:flex;gap:4px;margin-left:auto;align-items:center;flex-wrap:wrap;}
+.nkpi{background:rgba(255,255,255,.05);border:1px solid var(--bdi);border-radius:var(--rmd);
+  padding:3px 8px;font-size:9px;color:var(--ti2);white-space:nowrap;line-height:1.4;}
+.nkpi b{color:var(--ac);font-size:12px;font-weight:600;display:block;line-height:1.2;font-family:var(--font-mono);}
+.tbtn{padding:4px 10px;border-radius:var(--rpl);font-size:10px;font-weight:500;
+  cursor:pointer;border:1px solid var(--bdi);background:rgba(255,255,255,.05);
+  color:rgba(238,242,248,.5);transition:all var(--tf);font-family:var(--font-sans);}
+.tbtn:hover{color:var(--ti);background:rgba(255,255,255,.09);}
+.tabs{display:flex;padding:0 20px;}
+.tab{padding:8px 15px;font-size:11px;font-weight:500;cursor:pointer;
+  color:rgba(238,242,248,.32);border-bottom:2px solid transparent;
+  white-space:nowrap;transition:all var(--tf);user-select:none;letter-spacing:.05px;}
+.tab:hover{color:rgba(238,242,248,.7);background:rgba(255,255,255,.04);}
+.tab.active{color:var(--ti);border-bottom-color:var(--ac);}
+
+/* ── MAIN ── */
+main{flex:1;overflow:hidden;}
+.view{display:none;height:100%;}
+.view.active{display:grid;}
+#vp{grid-template-rows:auto 1fr;gap:10px;padding:12px 16px;}
+#vm{grid-template-columns:1fr 272px;}
+#vb{grid-template-rows:auto 1fr;gap:10px;padding:12px 16px;}
+#vd{grid-template-rows:auto 1fr;gap:10px;padding:12px 16px;}
+#vdp{grid-template-rows:auto 1fr;gap:10px;padding:12px 16px;}
+
+/* ── STAT ROW ── */
+.sr{display:grid;gap:8px;}
+.sc{background:var(--surface);border:0.5px solid var(--bd);border-radius:var(--rlg);
+  padding:11px 14px;box-shadow:var(--shsm);}
+.sc-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;font-weight:600;margin-bottom:3px;}
+.sc-val{font-family:var(--font-mono);font-size:20px;font-weight:500;color:var(--acd);line-height:1;}
+[data-theme="dark"] .sc-val{color:var(--ac);}
+.sc-note{font-size:10px;color:var(--t2);margin-top:3px;}
+
+/* ── PANEL ── */
+.panel{background:var(--surface);border:0.5px solid var(--bd);border-radius:var(--rxl);
+  box-shadow:var(--shsm);display:flex;flex-direction:column;padding:16px 20px;overflow:hidden;}
+.ph{margin-bottom:8px;}
+.pt{font-size:14px;font-weight:600;color:var(--t1);}
+.ps{font-size:9px;color:var(--t3);font-family:var(--font-mono);margin-top:2px;}
+.cw{flex:1;position:relative;min-height:0;}
+.cw2{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0;}
+
+/* ── CTRL ROW ── */
+.cr{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.cl{font-size:9px;color:var(--t3);font-family:var(--font-mono);letter-spacing:.3px;}
+.btn{padding:4px 11px;border-radius:var(--rpl);font-size:10px;font-weight:500;
+  font-family:var(--font-sans);cursor:pointer;border:1px solid var(--bd);
+  background:transparent;color:var(--t2);transition:all var(--tf) var(--ease);}
+.btn:hover{background:var(--sf2);color:var(--t1);}
+.btn.on{background:var(--t1);color:var(--surface);border-color:var(--t1);}
+[data-theme="dark"] .btn.on{background:var(--ac);color:#060C14;border-color:var(--ac);}
+
+/* ── MAP ── */
+.map-area{background:var(--sf2);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+#map-svg{width:100%;height:100%;display:block;}
+.map-side{background:var(--surface);border-left:0.5px solid var(--bd);
+  display:flex;flex-direction:column;overflow:hidden;}
+.msi{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:8px;}
+.rc{background:var(--sf2);border:0.5px solid var(--bd);border-radius:var(--rmd);padding:10px 12px;}
+.rl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:2px;}
+.rv{font-family:var(--font-mono);font-size:16px;font-weight:500;color:var(--t1);}
+.rn{font-size:10px;color:var(--t2);margin-top:1px;}
+.rb{height:4px;background:var(--bd);border-radius:2px;margin-top:6px;}
+.rbf{height:100%;border-radius:2px;transition:width .4s var(--ease),background .4s;}
+.mleg{border-top:0.5px solid var(--bd);padding:9px 13px;}
+.ml{font-size:9px;color:var(--t3);font-family:var(--font-mono);margin-bottom:4px;}
+.msw{display:flex;gap:2px;}
+.sw{flex:1;height:7px;border-radius:2px;}
+.mt{display:flex;justify-content:space-between;margin-top:3px;font-size:8px;color:var(--t3);font-family:var(--font-mono);}
+.mhint{text-align:center;padding:28px 12px;color:var(--t3);font-size:11px;line-height:1.7;}
+.mhint span{font-size:20px;display:block;margin-bottom:6px;}
+
+/* ── DUAL LEGEND ── */
+.dl{display:flex;background:var(--sf2);border:0.5px solid var(--bd);border-radius:var(--rmd);overflow:hidden;margin-bottom:8px;}
+.dlg{display:flex;align-items:center;gap:6px;padding:6px 11px;flex:1;}
+.dls{width:1px;height:24px;background:var(--bd);flex-shrink:0;}
+.dlsw{height:3px;width:18px;border-radius:2px;flex-shrink:0;}
+.dldot{width:18px;height:0;border-top:3px dotted;flex-shrink:0;}
+.dln{font-size:10px;font-weight:500;color:var(--t1);}
+.dlax{font-family:var(--font-mono);font-size:9px;color:var(--t3);}
+
+/* ── TOOLTIP ── */
+.tt{position:fixed;pointer-events:none;z-index:9999;
+  background:var(--ttbg);border:0.5px solid var(--ttbd);border-radius:var(--rlg);
+  box-shadow:var(--ttsh);padding:10px 12px;min-width:176px;max-width:224px;
+  font-size:11px;display:none;}
+.th{font-weight:600;color:var(--t1);font-size:12px;}
+.ts{font-size:9px;color:var(--t3);font-family:var(--font-mono);margin-bottom:6px;}
+.thr2{height:0.5px;background:var(--bd);margin:5px 0;}
+.tr{display:flex;justify-content:space-between;align-items:baseline;
+  padding:2px 0;border-bottom:0.5px solid var(--bds);}
+.tr:last-child{border-bottom:none;}
+.tk{font-size:10px;color:var(--t2);}
+.tv{font-family:var(--font-mono);font-size:10px;font-weight:500;}
+.bdg{display:inline-flex;padding:2px 7px;border-radius:var(--rpl);
+  font-size:9px;font-weight:600;border:1px solid;margin-top:5px;}
+.bs{background:var(--sb);color:var(--st);border-color:var(--sbd);}
+.ba{background:var(--ab);color:var(--at);border-color:var(--abd);}
+.be{background:var(--eb);color:var(--et);border-color:var(--ebd);}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-top">
+    <div>
+      <div class="logo">NZ Housing <em>Affordability Crisis</em></div>
+      <div class="logo-sub">Stats NZ · RBNZ · FRED/BIS · CoreLogic HPI · 1990–2024</div>
+    </div>
+    <div class="kbar">
+      <div class="nkpi"><b id="K1">—</b>Price/income 2024</div>
+      <div class="nkpi"><b id="K2">—</b>HPI growth 2000→24</div>
+      <div class="nkpi"><b id="K3">—</b>Income growth 2000→24</div>
+      <div class="nkpi"><b>44.4%</b>Q2 housing stress '23</div>
+      <div class="nkpi"><b id="K5">—</b>Deposit yrs 2024</div>
+      <div class="nkpi"><b id="K6">—</b>Floating rate 2024</div>
+      <div class="nkpi"><b id="K7">—</b>Debt/income 2024</div>
+      <button class="tbtn" onclick="toggleTheme()">◑ Theme</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active"  onclick="go('p',this)">📈 Price vs Income</div>
+    <div class="tab" onclick="go('m',this)">🗺 Regional Map</div>
+    <div class="tab" onclick="go('b',this)">⚖️ Cost Burden</div>
+    <div class="tab" onclick="go('d',this)">💳 Debt & Rates</div>
+    <div class="tab" onclick="go('dp',this)">🏠 Deposit Years</div>
+  </div>
+</nav>
+
+<main>
+
+<!-- VIEW: PRICE vs INCOME -->
+<div id="vp" class="view active">
+  <div class="sr" style="grid-template-columns:repeat(5,1fr);">
+    <div class="sc"><div class="sc-lbl">HPI 2000→2024</div><div class="sc-val" id="sp1">—</div><div class="sc-note">house price index growth</div></div>
+    <div class="sc"><div class="sc-lbl">Income 2000→2024</div><div class="sc-val" id="sp2">—</div><div class="sc-note">median income growth</div></div>
+    <div class="sc"><div class="sc-lbl">Price / Income 2024</div><div class="sc-val" id="sp3">—</div><div class="sc-note">vs 1.0× in 2000</div></div>
+    <div class="sc"><div class="sc-lbl">Affordability gap</div><div class="sc-val" id="sp4">—</div><div class="sc-note">prices outpaced income by</div></div>
+    <div class="sc"><div class="sc-lbl">Est. house price 2024</div><div class="sc-val" id="sp5">—</div><div class="sc-note">from CoreLogic HPI index</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph">
+      <div class="pt">Price-to-Income Index — NZ 2000–2024</div>
+      <div class="ps">Both series normalised to 1.0 in 2000 · CoreLogic HPI (RBNZ M10) + Stats NZ income survey · Hover for annual detail</div>
+    </div>
+    <div class="cw"><canvas id="cP"></canvas></div>
+  </div>
+</div>
+
+<!-- VIEW: REGIONAL MAP -->
+<div id="vm" class="view" style="overflow:hidden;">
+  <div class="map-area">
+    <svg id="msvg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+  <div class="map-side">
+    <div class="msi">
+      <div>
+        <div style="font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--t1);line-height:1.2;">Regional Affordability</div>
+        <div style="font-size:9px;color:var(--t3);font-family:var(--font-mono);margin-top:3px;">% of weekly income spent on rent · census years</div>
+      </div>
+      <div class="cr" style="margin-bottom:0;">
+        <span class="cl">Census year</span>
+        <button class="btn myr" onclick="setMYr(2006,this)">2006</button>
+        <button class="btn myr" onclick="setMYr(2013,this)">2013</button>
+        <button class="btn myr on" onclick="setMYr(2018,this)">2018</button>
+      </div>
+      <div id="mc"><div class="mhint"><span>🗺</span>Click any region<br>to explore its data</div></div>
+    </div>
+    <div class="mleg">
+      <div class="ml">Cost ratio (% income on rent)</div>
+      <div class="msw">
+        <div class="sw" style="background:var(--sc1)"></div>
+        <div class="sw" style="background:var(--sc2)"></div>
+        <div class="sw" style="background:var(--sc3)"></div>
+        <div class="sw" style="background:var(--sc4)"></div>
+        <div class="sw" style="background:var(--sc5)"></div>
+        <div class="sw" style="background:var(--sc6)"></div>
+      </div>
+      <div class="mt"><span>&lt;22%</span><span>25%</span><span>28%</span><span>31%</span><span>35%</span><span>39%+</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: COST BURDEN -->
+<div id="vb" class="view">
+  <div class="sr" style="grid-template-columns:repeat(5,1fr);">
+    <div class="sc"><div class="sc-lbl">Q1 lowest 2023</div><div class="sc-val">39.1%</div><div class="sc-note">spending 30%+ on housing</div></div>
+    <div class="sc"><div class="sc-lbl">Q2 second 2023</div><div class="sc-val" style="color:var(--bq2)">44.4%</div><div class="sc-note">highest burden of all groups</div></div>
+    <div class="sc"><div class="sc-lbl">Q3 middle 2023</div><div class="sc-val">37.4%</div><div class="sc-note">spending 30%+ on housing</div></div>
+    <div class="sc"><div class="sc-lbl">Q5 highest 2023</div><div class="sc-val">12.7%</div><div class="sc-note">spending 30%+ on housing</div></div>
+    <div class="sc"><div class="sc-lbl">Q2 vs Q5 gap</div><div class="sc-val">3.5×</div><div class="sc-note">inequality in housing burden</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph">
+      <div class="pt">Housing Cost Burden — % of Households Spending 30%+ of Income on Housing</div>
+      <div class="ps">By income quintile · Year ended June · Stats NZ Household Income & Housing Cost Statistics, Table 10 · Hover for detail</div>
+    </div>
+    <div class="cr">
+      <span class="cl">Year ended June</span>
+      <button class="btn byr" onclick="setByr(2020,this)">2020</button>
+      <button class="btn byr" onclick="setByr(2021,this)">2021</button>
+      <button class="btn byr" onclick="setByr(2022,this)">2022</button>
+      <button class="btn byr on" onclick="setByr(2023,this)">2023</button>
+      <span class="cl" style="margin-left:10px;">Toggle</span>
+      <button class="btn on" id="thrBtn" onclick="toggleThr()">30% threshold line</button>
+    </div>
+    <div class="cw"><canvas id="cB"></canvas></div>
+  </div>
+</div>
+
+<!-- VIEW: DEBT & RATES -->
+<div id="vd" class="view">
+  <div class="sr" style="grid-template-columns:repeat(5,1fr);">
+    <div class="sc"><div class="sc-lbl">Floating rate 2024</div><div class="sc-val" id="sd1">—</div><div class="sc-note">annual average (RBNZ B3)</div></div>
+    <div class="sc"><div class="sc-lbl">2yr fixed 2024</div><div class="sc-val" id="sd2">—</div><div class="sc-note">annual average (RBNZ B3)</div></div>
+    <div class="sc"><div class="sc-lbl">GFC peak 2008</div><div class="sc-val">10.1%</div><div class="sc-note">highest floating rate</div></div>
+    <div class="sc"><div class="sc-lbl">COVID low 2021</div><div class="sc-val">3.8%</div><div class="sc-note">2yr fixed record low</div></div>
+    <div class="sc"><div class="sc-lbl">Debt / income 2024</div><div class="sc-val" id="sd3">—</div><div class="sc-note">% of disposable income (FRED)</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph">
+      <div class="pt">Household Debt & Mortgage Rates — 1998–2024</div>
+      <div class="ps">Left axis: household debt as % of disposable income (FRED/BIS) · Right axis: mortgage rate % (RBNZ B3) · Hover for values</div>
+    </div>
+    <div class="dl">
+      <div class="dlg"><div class="dlsw" style="background:var(--cd)"></div><span class="dln">Household debt / income</span><span class="dlax">← left axis</span></div>
+      <div class="dls"></div>
+      <div class="dlg"><div class="dldot" style="border-color:var(--cr)"></div><span class="dln">Floating rate %</span><span class="dlax">right →</span></div>
+      <div class="dls"></div>
+      <div class="dlg"><div class="dlsw" style="background:var(--cp)"></div><span class="dln">2yr fixed rate %</span><span class="dlax">right →</span></div>
+    </div>
+    <div class="cw"><canvas id="cD"></canvas></div>
+  </div>
+</div>
+
+<!-- VIEW: DEPOSIT YEARS -->
+<div id="vdp" class="view">
+  <div class="sr" style="grid-template-columns:repeat(5,1fr);">
+    <div class="sc"><div class="sc-lbl">National 2000</div><div class="sc-val">4.3 yrs</div><div class="sc-note">baseline — 20% savings rate</div></div>
+    <div class="sc"><div class="sc-lbl">National 2024</div><div class="sc-val" id="sdp1">—</div><div class="sc-note">years to save 20% deposit</div></div>
+    <div class="sc"><div class="sc-lbl">Peak year</div><div class="sc-val" id="sdp2">—</div><div class="sc-note">worst nationally</div></div>
+    <div class="sc"><div class="sc-lbl">Nelson 2018</div><div class="sc-val">8.7 yrs</div><div class="sc-note">worst region — 2018 census</div></div>
+    <div class="sc"><div class="sc-lbl">Southland 2018</div><div class="sc-val">5.1 yrs</div><div class="sc-note">most affordable — 2018</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph">
+      <div class="pt">Years to Save a 20% Deposit — National Trend & Regional Snapshot</div>
+      <div class="ps">Assumes 20% savings rate on median income · House price via 4.5% rental yield capitalisation · RBNZ M10 + Stats NZ · Hover for detail</div>
+    </div>
+    <div class="cr">
+      <span class="cl">Regional snapshot year</span>
+      <button class="btn dyr" onclick="setDYr(2006,this)">2006</button>
+      <button class="btn dyr" onclick="setDYr(2013,this)">2013</button>
+      <button class="btn dyr on" onclick="setDYr(2018,this)">2018</button>
+    </div>
+    <div class="cw2">
+      <canvas id="cDL"></canvas>
+      <canvas id="cDB"></canvas>
+    </div>
+  </div>
+</div>
+
+</main>
+<div class="tt" id="ttEl"></div>
+
+<script>
+const D={"HPI":{"1990":480,"1991":471,"1992":470,"1993":489,"1994":546,"1995":596,"1996":664,"1997":705,"1998":691,"1999":704,"2000":699,"2001":706,"2002":766,"2003":913,"2004":1081,"2005":1236,"2006":1362,"2007":1514,"2008":1448,"2009":1424,"2010":1453,"2011":1462,"2012":1529,"2013":1666,"2014":1774,"2015":1988,"2016":2268,"2017":2414,"2018":2494,"2019":2560,"2020":2834,"2021":3624,"2022":3640,"2023":3400,"2024":3416},"INCOME_ANNUAL":{"2006":56160,"2013":68536,"1999":40872,"2020":90792,"2003":47424,"2023":115388,"2002":46332,"2010":62348,"2019":91520,"2005":52884,"2012":65936,"2014":71656,"2004":49868,"2021":97760,"2001":43940,"2018":88764,"2022":104728,"2011":64636,"2015":73320,"1998":39312,"2000":41288,"2007":59852,"2024":122148,"2017":81900,"2016":79664,"2008":62400,"2009":61828},"PTI":{"1998":1.04,"1999":1.02,"2000":1.0,"2001":0.95,"2002":0.98,"2003":1.14,"2004":1.28,"2005":1.38,"2006":1.43,"2007":1.49,"2008":1.37,"2009":1.36,"2010":1.38,"2011":1.34,"2012":1.37,"2013":1.44,"2014":1.46,"2015":1.6,"2016":1.68,"2017":1.74,"2018":1.66,"2019":1.65,"2020":1.84,"2021":2.19,"2022":2.05,"2023":1.74,"2024":1.65},"MORT":{"2024":{"float":8.41,"fixed":6.95},"2023":{"float":8.35,"fixed":7.28},"2022":{"float":6.11,"fixed":5.82},"2021":{"float":4.58,"fixed":3.81},"2020":{"float":4.77,"fixed":3.88},"2019":{"float":5.63,"fixed":4.66},"2018":{"float":5.76,"fixed":5.0},"2017":{"float":5.72,"fixed":5.08},"2016":{"float":5.7,"fixed":5.1},"2015":{"float":6.27,"fixed":5.62},"2014":{"float":6.31,"fixed":6.21},"2013":{"float":5.81,"fixed":5.67},"2012":{"float":5.81,"fixed":5.61},"2011":{"float":5.95,"fixed":6.35},"2010":{"float":6.16,"fixed":6.96},"2009":{"float":6.38,"fixed":6.5},"2008":{"float":10.12,"fixed":8.85},"2007":{"float":10.05,"fixed":8.96},"2006":{"float":9.47,"fixed":8.02},"2005":{"float":8.96,"fixed":7.79},"2004":{"float":7.94,"fixed":7.3},"2003":{"float":7.27,"fixed":6.87},"2002":{"float":7.4,"fixed":7.46},"2001":{"float":7.56,"fixed":7.15},"2000":{"float":8.24,"fixed":8.37},"1999":{"float":6.5,"fixed":7.29},"1998":{"float":8.4,"fixed":8.02}},"DEBT":{"1998":56.3,"1999":59.9,"2000":61.5,"2001":62.1,"2002":63.5,"2003":68.2,"2004":73.4,"2005":79.8,"2006":86.2,"2007":90.8,"2008":91.6,"2009":92.8,"2010":91.3,"2011":88.3,"2012":87.1,"2013":88.8,"2014":87.2,"2015":88.8,"2016":91.2,"2017":91.5,"2018":90.8,"2019":91.5,"2020":94.5,"2021":97.5,"2022":95.5,"2023":90.5,"2024":89.6},"BURDEN":{"2020":{"Q1 (lowest)":39.4,"Q2":42.1,"Q3":35.8,"Q4":23.6,"Q5 (highest)":10.7},"2021":{"Q1 (lowest)":38.7,"Q2":43.1,"Q3":34.9,"Q4":22.4,"Q5 (highest)":11.2},"2022":{"Q1 (lowest)":32.7,"Q2":41.3,"Q3":34.1,"Q4":22.8,"Q5 (highest)":9.7},"2023":{"Q1 (lowest)":39.1,"Q2":44.4,"Q3":37.4,"Q4":24.5,"Q5 (highest)":12.7}},"MAP":{"Auckland":{"2006":{"rent":280.0,"income":44000.0,"ratio":33.1},"2013":{"rent":350.0,"income":54000.0,"ratio":33.7},"2018":{"rent":450.0,"income":81000.0,"ratio":28.9}},"Bay of Plenty":{"2006":{"rent":200.0,"income":37000.0,"ratio":28.1},"2013":{"rent":260.0,"income":45000.0,"ratio":30.0},"2018":{"rent":320.0,"income":55000.0,"ratio":30.3}},"Canterbury":{"2006":{"rent":200.0,"income":37000.0,"ratio":28.1},"2013":{"rent":280.0,"income":54000.0,"ratio":27.0},"2018":{"rent":330.0,"income":55000.0,"ratio":31.2}},"Gisborne":{"2006":{"rent":140.0,"income":32000.0,"ratio":22.8},"2013":{"rent":200.0,"income":38000.0,"ratio":27.4},"2018":{"rent":220.0,"income":45000.0,"ratio":25.4}},"Hawke's Bay":{"2006":{"rent":170.0,"income":32000.0,"ratio":27.6},"2013":{"rent":240.0,"income":38000.0,"ratio":32.8},"2018":{"rent":260.0,"income":45000.0,"ratio":30.0}},"Manawatu-Whanganui":{"2006":{"rent":140.0,"income":32000.0,"ratio":22.8},"2013":{"rent":200.0,"income":38000.0,"ratio":27.4},"2018":{"rent":220.0,"income":45000.0,"ratio":25.4}},"Marlborough":{"2006":{"rent":180.0,"income":44000.0,"ratio":21.3},"2013":{"rent":250.0,"income":45000.0,"ratio":28.9},"2018":{"rent":280.0,"income":55000.0,"ratio":26.5}},"Nelson":{"2006":{"rent":210.0,"income":37000.0,"ratio":29.5},"2013":{"rent":290.0,"income":45000.0,"ratio":33.5},"2018":{"rent":340.0,"income":45000.0,"ratio":39.3}},"Northland":{"2006":{"rent":160.0,"income":37000.0,"ratio":22.5},"2013":{"rent":230.0,"income":38000.0,"ratio":31.5},"2018":{"rent":270.0,"income":45000.0,"ratio":31.2}},"Otago":{"2006":{"rent":180.0,"income":37000.0,"ratio":25.3},"2013":{"rent":250.0,"income":45000.0,"ratio":28.9},"2018":{"rent":290.0,"income":55000.0,"ratio":27.4}},"Southland":{"2006":{"rent":130.0,"income":32000.0,"ratio":21.1},"2013":{"rent":180.0,"income":45000.0,"ratio":20.8},"2018":{"rent":200.0,"income":45000.0,"ratio":23.1}},"Taranaki":{"2006":{"rent":150.0,"income":32000.0,"ratio":24.4},"2013":{"rent":220.0,"income":45000.0,"ratio":25.4},"2018":{"rent":250.0,"income":45000.0,"ratio":28.9}},"Tasman":{"2006":{"rent":190.0,"income":37000.0,"ratio":26.7},"2013":{"rent":260.0,"income":45000.0,"ratio":30.0},"2018":{"rent":300.0,"income":55000.0,"ratio":28.4}},"Waikato":{"2006":{"rent":180.0,"income":37000.0,"ratio":25.3},"2013":{"rent":250.0,"income":45000.0,"ratio":28.9},"2018":{"rent":300.0,"income":55000.0,"ratio":28.4}},"Wellington":{"2006":{"rent":210.0,"income":44000.0,"ratio":24.8},"2013":{"rent":300.0,"income":54000.0,"ratio":28.9},"2018":{"rent":350.0,"income":65000.0,"ratio":28.0}},"West Coast":{"2006":{"rent":130.0,"income":32000.0,"ratio":21.1},"2013":{"rent":200.0,"income":45000.0,"ratio":23.1},"2018":{"rent":200.0,"income":38000.0,"ratio":27.4}}},"HOUSE_PRICE":{"1998":177940,"1999":181288,"2000":180000,"2001":181803,"2002":197253,"2003":235107,"2004":278369,"2005":318283,"2006":350730,"2007":389871,"2008":372876,"2009":366695,"2010":374163,"2011":376481,"2012":393734,"2013":429013,"2014":456824,"2015":511931,"2016":584034,"2017":621631,"2018":642232,"2019":659227,"2020":729785,"2021":933219,"2022":937339,"2023":875536,"2024":879657},"DEPOSIT_YEARS":{"1998":4.5,"1999":4.4,"2000":4.4,"2001":4.1,"2002":4.3,"2003":5.0,"2004":5.6,"2005":6.0,"2006":6.2,"2007":6.5,"2008":6.0,"2009":5.9,"2010":6.0,"2011":5.8,"2012":6.0,"2013":6.3,"2014":6.4,"2015":7.0,"2016":7.3,"2017":7.6,"2018":7.2,"2019":7.2,"2020":8.0,"2021":9.5,"2022":9.0,"2023":7.6,"2024":7.2},"REGIONAL_DEPOSIT":{"Auckland":{"2006":7.4,"2013":7.5,"2018":6.4},"Bay of Plenty":{"2006":6.2,"2013":6.7,"2018":6.7},"Canterbury":{"2006":6.2,"2013":6.0,"2018":6.9},"Gisborne":{"2006":5.1,"2013":6.1,"2018":5.6},"Hawke's Bay":{"2006":6.1,"2013":7.3,"2018":6.7},"Manawatu-Whanganui":{"2006":5.1,"2013":6.1,"2018":5.6},"Marlborough":{"2006":4.7,"2013":6.4,"2018":5.9},"Nelson":{"2006":6.6,"2013":7.4,"2018":8.7},"Northland":{"2006":5.0,"2013":7.0,"2018":6.9},"Otago":{"2006":5.6,"2013":6.4,"2018":6.1},"Southland":{"2006":4.7,"2013":4.6,"2018":5.1},"Taranaki":{"2006":5.4,"2013":5.6,"2018":6.4},"Tasman":{"2006":5.9,"2013":6.7,"2018":6.3},"Waikato":{"2006":5.6,"2013":6.4,"2018":6.3},"Wellington":{"2006":5.5,"2013":6.4,"2018":6.2},"West Coast":{"2006":4.7,"2013":5.1,"2018":6.1}}};
+const GEO={"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{"name":"Northland","regc_id":"01"},"geometry":{"type":"Polygon","coordinates":[[[173.5,-35.1],[174.5,-35.1],[174.8,-35.7],[174.7,-36.5],[174.0,-36.5],[173.2,-36.0],[173.0,-35.5],[173.5,-35.1]]]}},{"type":"Feature","properties":{"name":"Auckland","regc_id":"02"},"geometry":{"type":"Polygon","coordinates":[[[174.5,-36.5],[175.0,-36.5],[175.5,-36.8],[175.5,-37.2],[174.7,-37.2],[174.5,-36.9],[174.5,-36.5]]]}},{"type":"Feature","properties":{"name":"Waikato","regc_id":"03"},"geometry":{"type":"Polygon","coordinates":[[[174.5,-37.2],[175.5,-37.2],[176.2,-37.5],[176.0,-38.5],[175.5,-39.0],[174.8,-38.5],[174.0,-38.0],[174.5,-37.2]]]}},{"type":"Feature","properties":{"name":"Bay of Plenty","regc_id":"04"},"geometry":{"type":"Polygon","coordinates":[[[175.5,-37.2],[177.0,-37.5],[178.0,-37.8],[177.5,-38.5],[176.5,-38.5],[175.8,-38.0],[175.5,-37.5],[175.5,-37.2]]]}},{"type":"Feature","properties":{"name":"Gisborne","regc_id":"05"},"geometry":{"type":"Polygon","coordinates":[[[177.0,-37.5],[178.5,-37.5],[178.7,-38.5],[178.0,-39.0],[177.0,-38.5],[176.5,-38.5],[177.0,-37.5]]]}},{"type":"Feature","properties":{"name":"Hawke's Bay","regc_id":"06"},"geometry":{"type":"Polygon","coordinates":[[[176.0,-38.5],[177.0,-38.5],[178.0,-39.0],[177.5,-40.0],[176.5,-40.0],[175.8,-39.5],[176.0,-38.5]]]}},{"type":"Feature","properties":{"name":"Taranaki","regc_id":"07"},"geometry":{"type":"Polygon","coordinates":[[[174.0,-38.5],[175.0,-38.5],[175.0,-39.5],[174.5,-39.8],[173.8,-39.5],[173.5,-39.0],[174.0,-38.5]]]}},{"type":"Feature","properties":{"name":"Manawatu-Whanganui","regc_id":"08"},"geometry":{"type":"Polygon","coordinates":[[[175.0,-38.5],[176.0,-38.5],[176.5,-39.5],[176.0,-40.5],[175.5,-40.8],[174.8,-40.5],[174.5,-39.8],[175.0,-38.5]]]}},{"type":"Feature","properties":{"name":"Wellington","regc_id":"09"},"geometry":{"type":"Polygon","coordinates":[[[175.0,-40.5],[176.0,-40.5],[176.5,-41.2],[176.0,-41.5],[175.5,-41.5],[175.0,-41.0],[174.8,-40.8],[175.0,-40.5]]]}},{"type":"Feature","properties":{"name":"Tasman","regc_id":"12"},"geometry":{"type":"Polygon","coordinates":[[[172.0,-40.8],[173.0,-40.5],[173.5,-41.2],[173.0,-41.8],[172.0,-42.0],[171.5,-41.5],[172.0,-40.8]]]}},{"type":"Feature","properties":{"name":"Nelson","regc_id":"13"},"geometry":{"type":"Polygon","coordinates":[[[173.0,-41.0],[173.5,-41.0],[173.8,-41.4],[173.5,-41.6],[173.0,-41.5],[173.0,-41.0]]]}},{"type":"Feature","properties":{"name":"Marlborough","regc_id":"14"},"geometry":{"type":"Polygon","coordinates":[[[173.5,-41.0],[174.5,-41.0],[175.0,-41.5],[174.5,-42.0],[173.5,-42.0],[173.0,-41.8],[173.5,-41.0]]]}},{"type":"Feature","properties":{"name":"West Coast","regc_id":"15"},"geometry":{"type":"Polygon","coordinates":[[[171.0,-41.5],[172.0,-41.5],[172.5,-42.5],[172.0,-43.5],[171.0,-44.0],[170.5,-43.5],[170.5,-42.5],[171.0,-41.5]]]}},{"type":"Feature","properties":{"name":"Canterbury","regc_id":"16"},"geometry":{"type":"Polygon","coordinates":[[[171.5,-42.0],[173.5,-42.0],[173.5,-44.5],[172.5,-45.0],[171.0,-44.5],[170.5,-43.5],[171.5,-42.0]]]}},{"type":"Feature","properties":{"name":"Otago","regc_id":"17"},"geometry":{"type":"Polygon","coordinates":[[[168.0,-43.5],[171.0,-43.5],[171.5,-44.5],[170.5,-46.0],[169.0,-46.5],[168.0,-46.0],[167.5,-45.0],[168.0,-43.5]]]}},{"type":"Feature","properties":{"name":"Southland","regc_id":"18"},"geometry":{"type":"Polygon","coordinates":[[[166.5,-45.5],[168.0,-45.0],[169.0,-46.5],[168.5,-47.0],[167.0,-47.0],[166.0,-46.5],[166.5,-45.5]]]}}]};
+
+// ── PROJECTION ──
+const LN0=166,LN1=178.7,LT0=-47,LT1=-35.1,SW=400,SH=600;
+function proj(lon,lat){return[(lon-LN0)/(LN1-LN0)*SW,(LT1-lat)/(LT1-LT0)*SH];}
+function r2p(ring){return ring.map((p,i)=>{const[x,y]=proj(p[0],p[1]);return(i?'L':'M')+x.toFixed(1)+','+y.toFixed(1);}).join('')+'Z';}
+
+// ── CSS VARS ──
+function cv(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+const SCV=['--sc1','--sc2','--sc3','--sc4','--sc5','--sc6'];
+const SCT=[22,25,28,31,35,39];
+function sci(r){const i=SCT.findIndex(t=>r<t);return i<0?5:i;}
+function scc(r){return cv(SCV[sci(r)]);}
+function bdg(v,type){
+  if(type==='r'){if(v>=35)return'<span class="bdg bs">High stress</span>';if(v>=28)return'<span class="bdg be">Moderate</span>';return'<span class="bdg ba">Lower cost</span>';}
+  if(type==='d'){if(v>=8)return'<span class="bdg bs">Severe</span>';if(v>=6)return'<span class="bdg be">High</span>';return'<span class="bdg ba">Moderate</span>';}
+  if(type==='b'){if(v>=40)return'<span class="bdg bs">Severely stressed</span>';if(v>=30)return'<span class="bdg be">Housing stressed</span>';return'<span class="bdg ba">Below threshold</span>';}
+  return'';
+}
+
+// ── TOOLTIP ──
+const tt=document.getElementById('ttEl');
+function showTT(h,e){tt.innerHTML=h;tt.style.display='block';moveTT(e);}
+function moveTT(e){let x=e.clientX+14,y=e.clientY-10;if(x+tt.offsetWidth>window.innerWidth-8)x=e.clientX-tt.offsetWidth-10;if(y+tt.offsetHeight>window.innerHeight-8)y=e.clientY-tt.offsetHeight-10;tt.style.left=x+'px';tt.style.top=y+'px';}
+function hideTT(){tt.style.display='none';}
+document.addEventListener('mousemove',e=>{if(tt.style.display!=='none')moveTT(e);});
+
+// ── CHART DEFAULTS ──
+function cd(){return{responsive:true,maintainAspectRatio:false,animation:{duration:300},plugins:{legend:{display:false},tooltip:{enabled:false}},interaction:{mode:'index',intersect:false}};}
+function ax(e={}){return{ticks:{color:cv('--t3'),font:{size:10,family:'DM Mono'}},grid:{color:cv('--bds')},border:{color:cv('--bd')},...e};}
+
+// ── INIT KPIS ──
+function initK(){
+  const h00=+D.HPI['2000'],h24=+D.HPI['2024'],i00=+D.INCOME_ANNUAL['2000'],i24=+D.INCOME_ANNUAL['2024'];
+  const pti=D.PTI['2024']||D.PTI[Object.keys(D.PTI).sort().pop()];
+  document.getElementById('K1').textContent=pti+'×';
+  document.getElementById('K2').textContent='+'+Math.round((h24/h00-1)*100)+'%';
+  document.getElementById('K3').textContent='+'+Math.round((i24/i00-1)*100)+'%';
+  document.getElementById('K5').textContent=(D.DEPOSIT_YEARS['2024']||'?')+' yrs';
+  document.getElementById('K6').textContent=(D.MORT['2024']?.float||'—')+'%';
+  document.getElementById('K7').textContent=(D.DEBT['2024']||'—')+'%';
+  document.getElementById('sp1').textContent='+'+Math.round((h24/h00-1)*100)+'%';
+  document.getElementById('sp2').textContent='+'+Math.round((i24/i00-1)*100)+'%';
+  document.getElementById('sp3').textContent=pti+'×';
+  document.getElementById('sp4').textContent='+'+Math.round((pti-1)*100)+'%';
+  document.getElementById('sp5').textContent='$'+Math.round(+D.HOUSE_PRICE['2024']/1000)+'k';
+  const m24=D.MORT['2024'];
+  if(m24){document.getElementById('sd1').textContent=(m24.float||'—')+'%';document.getElementById('sd2').textContent=(m24.fixed||'—')+'%';}
+  document.getElementById('sd3').textContent=(D.DEBT['2024']||'—')+'%';
+  document.getElementById('sdp1').textContent=(D.DEPOSIT_YEARS['2024']||'—')+' yrs';
+  const mx=Object.entries(D.DEPOSIT_YEARS).reduce((a,b)=>+b[1]>+a[1]?b:a);
+  document.getElementById('sdp2').textContent=mx[1]+' yrs ('+mx[0]+')';
+}
+
+// ── VIEW 1: PRICE vs INCOME ──
+let cP=null;
+function buildP(){
+  if(cP){cP.destroy();cP=null;}
+  const yrs=Object.keys(D.PTI).map(Number).sort().filter(y=>y>=2000&&y<=2024);
+  const bH=+D.HPI['2000'],bI=+D.INCOME_ANNUAL['2000'];
+  const hN=yrs.map(y=>+(+D.HPI[y]/bH).toFixed(3));
+  const iN=yrs.map(y=>+(+D.INCOME_ANNUAL[y]/bI).toFixed(3));
+  const EV={2002:'Post-2000 boom',2007:'Pre-GFC peak',2009:'GFC correction',2020:'COVID surge',2021:'Market peak',2023:'Rate shock'};
+  cP=new Chart(document.getElementById('cP'),{
+    type:'line',
+    data:{labels:yrs,datasets:[
+      {label:'HPI',data:hN,borderColor:cv('--cp'),backgroundColor:cv('--cp')+'20',borderWidth:2.5,pointRadius:0,pointHoverRadius:5,fill:true,tension:.35},
+      {label:'Income',data:iN,borderColor:cv('--ci'),borderWidth:2,pointRadius:0,pointHoverRadius:5,fill:false,tension:.35,borderDash:[8,4]},
+    ]},
+    options:{...cd(),
+      onHover:(e,els)=>{
+        if(!els.length){hideTT();return;}
+        const i=els[0].index,yr=yrs[i];
+        const ev=EV[yr]?`<div class="bdg be" style="margin-top:5px">${EV[yr]}</div>`:'';
+        showTT(`<div class="th">${yr}</div><div class="ts">Index: 2000 = 1.0</div>
+          <div class="thr2"></div>
+          <div class="tr"><span class="tk">House Price Index</span><span class="tv" style="color:${cv('--cp')}">${hN[i]}×</span></div>
+          <div class="tr"><span class="tk">Median Income</span><span class="tv" style="color:${cv('--ci')}">${iN[i]}×</span></div>
+          <div class="tr"><span class="tk">Price/Income ratio</span><span class="tv">${+(hN[i]/iN[i]).toFixed(2)}×</span></div>
+          <div class="tr"><span class="tk">Median income/yr</span><span class="tv">$${Math.round(+D.INCOME_ANNUAL[yr]/1000)}k</span></div>
+          <div class="tr"><span class="tk">Est. house price</span><span class="tv">${D.HOUSE_PRICE[yr]?'$'+Math.round(+D.HOUSE_PRICE[yr]/1000)+'k':'—'}</span></div>
+          ${ev}`,e.native);
+      },
+      plugins:{...cd().plugins,
+        legend:{display:true,position:'top',align:'end',
+          labels:{color:cv('--t2'),font:{size:11,family:'Instrument Sans'},boxWidth:22,boxHeight:3,padding:14,
+            generateLabels:()=>[
+              {text:'House Price Index',strokeStyle:cv('--cp'),fillStyle:cv('--cp')+'20',lineWidth:2.5},
+              {text:'Median Income (dashed)',strokeStyle:cv('--ci'),fillStyle:'transparent',lineWidth:2},
+            ]}}},
+      scales:{
+        x:{...ax(),ticks:{...ax().ticks,maxTicksLimit:10,maxRotation:0}},
+        y:{...ax(),title:{display:true,text:'Index (2000 = 1.0)',color:cv('--t3'),font:{size:10}},min:0.8,
+          ticks:{...ax().ticks,callback:v=>v+'×'}}
+      }
+    }
+  });
+}
+
+// ── VIEW 2: MAP ──
+let mYr=2018,selR=null;
+function buildMap(){
+  const svg=document.getElementById('msvg');
+  svg.innerHTML='';
+  GEO.features.forEach(feat=>{
+    const name=feat.properties.name;
+    const md=D.MAP[name],d=md?md[String(mYr)]:null;
+    const ratio=d?d.ratio:20;
+    const fill=selR===name?cv('--sb2'):scc(ratio);
+    const stroke=selR===name?cv('--st2'):cv('--surface');
+    const sw=selR===name?1.8:0.7;
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.style.cursor='pointer';
+    const polys=feat.geometry.type==='Polygon'?[feat.geometry.coordinates]:feat.geometry.coordinates;
+    let x0=9e9,x1=-9e9,y0=9e9,y1=-9e9;
+    polys.forEach(poly=>poly.forEach(ring=>{
+      ring.forEach(pt=>{const[px,py]=proj(pt[0],pt[1]);x0=Math.min(x0,px);x1=Math.max(x1,px);y0=Math.min(y0,py);y1=Math.max(y1,py);});
+      const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('d',r2p(ring));p.setAttribute('fill',fill);p.setAttribute('stroke',stroke);p.setAttribute('stroke-width',sw);
+      g.appendChild(p);
+    }));
+    const cx=(x0+x1)/2,cy=(y0+y1)/2;
+    const AB={'Northland':'NTL','Auckland':'AKL','Waikato':'WKT','Bay of Plenty':'BOP','Gisborne':'GIS',"Hawke's Bay":'HKB','Taranaki':'TRN','Manawatu-Whanganui':'MWT','Wellington':'WLG','Tasman':'TAS','Nelson':'NSN','Marlborough':'MBH','West Coast':'WC','Canterbury':'CAN','Otago':'OTA','Southland':'STL'};
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',cx.toFixed(1));t.setAttribute('y',cy.toFixed(1));
+    t.setAttribute('text-anchor','middle');t.setAttribute('dominant-baseline','central');
+    t.setAttribute('font-size','9');t.setAttribute('font-weight','600');
+    t.setAttribute('font-family','Instrument Sans,sans-serif');
+    t.setAttribute('fill',sci(ratio)>=3?'#fff':'#1A1917');t.setAttribute('pointer-events','none');
+    t.textContent=AB[name]||name.slice(0,3);g.appendChild(t);
+    g.addEventListener('mouseenter',e=>{
+      if(selR!==name)g.querySelectorAll('path').forEach(p=>p.setAttribute('fill',scc(ratio)+'BB'));
+      if(d)showTT(`<div class="th">${name}</div><div class="ts">Census ${mYr}</div><div class="thr2"></div>
+        <div class="tr"><span class="tk">Weekly rent</span><span class="tv">$${d.rent}/wk</span></div>
+        <div class="tr"><span class="tk">Annual income</span><span class="tv">$${Math.round(d.income/1000)}k</span></div>
+        <div class="tr"><span class="tk">Cost ratio</span><span class="tv">${d.ratio}%</span></div>
+        ${bdg(d.ratio,'r')}`,e);
+    });
+    g.addEventListener('mouseleave',()=>{if(selR!==name)g.querySelectorAll('path').forEach(p=>p.setAttribute('fill',scc(ratio)));hideTT();});
+    g.addEventListener('click',()=>selRegion(name));
+    svg.appendChild(g);
+  });
+}
+function selRegion(name){
+  selR=name;buildMap();
+  const md=D.MAP[name],d=md?md[String(mYr)]:null;
+  const dep=D.REGIONAL_DEPOSIT[name]?.[String(mYr)];
+  if(!d){document.getElementById('mc').innerHTML='<div class="mhint">No data for this region</div>';return;}
+  document.getElementById('mc').innerHTML=`
+    <div style="font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--t1);">${name}</div>
+    <div class="rc"><div class="rl">Weekly rent</div><div class="rv">$${d.rent}<span style="font-size:11px">/wk</span></div><div class="rn">$${Math.round(d.rent*52/1000)}k annually</div></div>
+    <div class="rc"><div class="rl">Median household income</div><div class="rv">$${Math.round(d.income/1000)}k<span style="font-size:11px">/yr</span></div></div>
+    <div class="rc"><div class="rl">Housing cost ratio</div><div class="rv">${d.ratio}%</div>${bdg(d.ratio,'r')}<div class="rb"><div class="rbf" style="width:${Math.min((d.ratio/45)*100,100).toFixed(0)}%;background:${scc(d.ratio)}"></div></div></div>
+    ${dep?`<div class="rc"><div class="rl">Years to save 20% deposit</div><div class="rv">${dep}<span style="font-size:11px"> yrs</span></div>${bdg(dep,'d')}</div>`:''}
+  `;
+}
+function setMYr(yr,btn){
+  mYr=yr;selR=null;
+  document.querySelectorAll('.myr').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.getElementById('mc').innerHTML='<div class="mhint"><span>🗺</span>Click any region<br>to explore its data</div>';
+  buildMap();
+}
+
+// ── VIEW 3: BURDEN ──
+let cB=null,bYr=2023,showT=true;
+function buildB(){
+  if(cB){cB.destroy();cB=null;}
+  const data=D.BURDEN[String(bYr)];if(!data)return;
+  const KEYS=['Q1 (lowest)','Q2','Q3','Q4','Q5 (highest)'];
+  const LABS=['Q1 — Lowest','Q2','Q3 — Middle','Q4','Q5 — Highest'];
+  const vals=KEYS.map(k=>+(data[k]||0));
+  const cols=['--bq1','--bq2','--bq3','--bq4','--bq5'].map(c=>cv(c));
+  cB=new Chart(document.getElementById('cB'),{
+    type:'bar',
+    data:{labels:LABS,datasets:[{data:vals,backgroundColor:cols.map(c=>c+'CC'),hoverBackgroundColor:cols,borderRadius:5,borderSkipped:false}]},
+    options:{...cd(),
+      onHover:(e,els)=>{
+        if(!els.length){hideTT();return;}
+        const i=els[0].index;
+        showTT(`<div class="th">${LABS[i]}</div><div class="ts">Year ended June ${bYr}</div><div class="thr2"></div>
+          <div class="tr"><span class="tk">Spending 30%+ on housing</span><span class="tv">${vals[i]}%</span></div>
+          <div class="tr"><span class="tk">of households in group</span></div>${bdg(vals[i],'b')}`,e.native);
+      },
+      scales:{
+        x:{...ax(),ticks:{...ax().ticks,maxRotation:0}},
+        y:{...ax(),max:55,title:{display:true,text:'% of households (30%+ housing cost ratio)',color:cv('--t3'),font:{size:10}},ticks:{...ax().ticks,callback:v=>v+'%'}}
+      },
+      plugins:{...cd().plugins,
+        annotation:showT?{annotations:{l30:{type:'line',yMin:30,yMax:30,borderColor:cv('--thr'),borderWidth:1.5,borderDash:[7,3],
+          label:{display:true,content:'30% stress threshold',color:cv('--thr'),font:{size:10,family:'Instrument Sans'},position:'end',yAdjust:-10,backgroundColor:'transparent'}}}}:{annotations:{}}}
+    }
+  });
+}
+function setByr(yr,btn){bYr=yr;document.querySelectorAll('.byr').forEach(b=>b.classList.remove('on'));btn.classList.add('on');buildB();}
+function toggleThr(){showT=!showT;document.getElementById('thrBtn').classList.toggle('on',showT);buildB();}
+
+// ── VIEW 4: DEBT & RATES ──
+let cD=null;
+function buildD(){
+  if(cD){cD.destroy();cD=null;}
+  const yrs=Object.keys(D.DEBT).map(Number).sort().filter(y=>y>=1998&&y<=2024);
+  const dv=yrs.map(y=>+D.DEBT[y]);
+  const fv=yrs.map(y=>D.MORT[y]?.float||null);
+  const xv=yrs.map(y=>D.MORT[y]?.fixed||null);
+  cD=new Chart(document.getElementById('cD'),{
+    type:'line',
+    data:{labels:yrs,datasets:[
+      {label:'Debt',data:dv,borderColor:cv('--cd'),backgroundColor:cv('--cd')+'20',borderWidth:2.5,pointRadius:0,pointHoverRadius:5,fill:true,tension:.4,yAxisID:'y'},
+      {label:'Float',data:fv,borderColor:cv('--cr'),borderWidth:2,pointRadius:0,pointHoverRadius:5,fill:false,tension:.35,borderDash:[5,3],yAxisID:'y2'},
+      {label:'Fixed',data:xv,borderColor:cv('--cp'),borderWidth:2,pointRadius:0,pointHoverRadius:5,fill:false,tension:.35,yAxisID:'y2'},
+    ]},
+    options:{...cd(),
+      onHover:(e,els)=>{
+        if(!els.length){hideTT();return;}
+        const i=els[0].index,yr=yrs[i];
+        showTT(`<div class="th">${yr}</div><div class="thr2"></div>
+          <div class="tr"><span class="tk">Household debt</span><span class="tv" style="color:${cv('--cd')}">${dv[i]||'—'}%</span></div>
+          <div class="tr"><span class="tk">Floating rate</span><span class="tv" style="color:${cv('--cr')}">${fv[i]||'—'}%</span></div>
+          <div class="tr"><span class="tk">2yr fixed</span><span class="tv" style="color:${cv('--cp')}">${xv[i]||'—'}%</span></div>`,e.native);
+      },
+      scales:{
+        x:{...ax(),ticks:{...ax().ticks,maxTicksLimit:10,maxRotation:0}},
+        y:{...ax(),position:'left',title:{display:true,text:'Debt as % of disposable income',color:cv('--cd'),font:{size:10}},ticks:{...ax().ticks,color:cv('--cd'),callback:v=>v+'%'}},
+        y2:{...ax(),position:'right',title:{display:true,text:'Interest rate %',color:cv('--cr'),font:{size:10}},ticks:{...ax().ticks,color:cv('--cr'),callback:v=>v+'%'},grid:{display:false},min:0,max:14}
+      }
+    }
+  });
+}
+
+// ── VIEW 5: DEPOSIT ──
+let cDL=null,cDB=null,dYr=2018;
+function buildDP(){
+  if(cDL){cDL.destroy();cDL=null;}if(cDB){cDB.destroy();cDB=null;}
+  const yrs=Object.keys(D.DEPOSIT_YEARS).map(Number).sort().filter(y=>y>=2000&&y<=2024);
+  const vals=yrs.map(y=>+D.DEPOSIT_YEARS[y]);
+  cDL=new Chart(document.getElementById('cDL'),{
+    type:'line',
+    data:{labels:yrs,datasets:[{label:'Deposit yrs',data:vals,borderColor:cv('--cdep'),backgroundColor:cv('--cdep')+'20',borderWidth:2.5,pointRadius:0,pointHoverRadius:5,fill:true,tension:.35}]},
+    options:{...cd(),
+      onHover:(e,els)=>{
+        if(!els.length){hideTT();return;}const i=els[0].index;
+        showTT(`<div class="th">National ${yrs[i]}</div><div class="thr2"></div>
+          <div class="tr"><span class="tk">Years to save deposit</span><span class="tv">${vals[i]} yrs</span></div>
+          <div class="tr"><span class="tk">at 20% savings rate</span></div>`,e.native);
+      },
+      plugins:{...cd().plugins,title:{display:true,text:'National trend 2000–2024',color:cv('--t2'),font:{size:11,family:'Instrument Sans'},align:'start',padding:{bottom:8}}},
+      scales:{
+        x:{...ax(),ticks:{...ax().ticks,maxTicksLimit:8,maxRotation:0}},
+        y:{...ax(),title:{display:true,text:'Years to save 20% deposit',color:cv('--t3'),font:{size:10}},min:3,ticks:{...ax().ticks,callback:v=>v+' yr'}}
+      }
+    }
+  });
+  const regs=Object.keys(D.REGIONAL_DEPOSIT).filter(r=>D.REGIONAL_DEPOSIT[r][String(dYr)]).sort((a,b)=>+D.REGIONAL_DEPOSIT[b][String(dYr)]- +D.REGIONAL_DEPOSIT[a][String(dYr)]);
+  const dv=regs.map(r=>+D.REGIONAL_DEPOSIT[r][String(dYr)]);
+  const bc=dv.map(v=>v>=8?cv('--cdep'):v>=6?cv('--cr'):cv('--ci'));
+  cDB=new Chart(document.getElementById('cDB'),{
+    type:'bar',
+    data:{labels:regs.map(r=>r.length>10?r.slice(0,9)+'…':r),datasets:[{data:dv,backgroundColor:bc.map(c=>c+'CC'),hoverBackgroundColor:bc,borderRadius:3,borderSkipped:false}]},
+    options:{...cd(),
+      onHover:(e,els)=>{
+        if(!els.length){hideTT();return;}const i=els[0].index;
+        showTT(`<div class="th">${regs[i]}</div><div class="ts">${dYr} snapshot</div><div class="thr2"></div>
+          <div class="tr"><span class="tk">Years to save deposit</span><span class="tv">${dv[i]} yrs</span></div>${bdg(dv[i],'d')}`,e.native);
+      },
+      plugins:{...cd().plugins,title:{display:true,text:`Regional snapshot — ${dYr}`,color:cv('--t2'),font:{size:11,family:'Instrument Sans'},align:'start',padding:{bottom:8}}},
+      scales:{
+        x:{...ax(),ticks:{...ax().ticks,maxRotation:42,font:{size:9,family:'DM Mono'}}},
+        y:{...ax(),title:{display:true,text:'Years',color:cv('--t3'),font:{size:10}},min:0,ticks:{...ax().ticks,callback:v=>v+' yr'}}
+      }
+    }
+  });
+}
+function setDYr(yr,btn){dYr=yr;document.querySelectorAll('.dyr').forEach(b=>b.classList.remove('on'));btn.classList.add('on');buildDP();}
+
+// ── TAB SWITCHING ──
+function go(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  el.classList.add('active');document.getElementById('v'+id).classList.add('active');hideTT();
+  if(id==='p'&&!cP)buildP();
+  if(id==='m')setTimeout(()=>buildMap(),40);
+  if(id==='b'&&!cB)buildB();
+  if(id==='d'&&!cD)buildD();
+  if(id==='dp')buildDP();
+}
+function toggleTheme(){
+  const h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+  [cP,cB,cD,cDL,cDB].forEach(c=>{if(c)c.destroy();});
+  cP=cB=cD=cDL=cDB=null;
+  const a=document.querySelector('.tab.active');
+  if(a){const id=a.getAttribute('onclick').match(/go\('(\w+)'/)[1];setTimeout(()=>go(id,a),50);}
+}
+
+// ── INIT ──
+initK();buildP();
+</script>
+</body>
+</html>
