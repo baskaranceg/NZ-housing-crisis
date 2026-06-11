@@ -1783,7 +1783,7 @@
 
 </div><!-- /page -->
   </div>
-  <div class="tooltip" id="ab-tooltip" style="position:fixed;z-index:9999;pointer-events:none;opacity:0;min-width:200px;max-width:240px;padding:14px 16px;border-radius:10px;box-shadow:0 6px 28px rgba(0,0,0,.4);background:var(--surface,#161b22);border:0.5px solid var(--border,#2d3748);font-family:var(--sans);font-size:13px;"></div>
+  <div class="ab-tooltip-box" id="ab-tooltip" style="position:fixed;z-index:9999;pointer-events:none;opacity:0;min-width:200px;max-width:240px;padding:14px 16px;border-radius:10px;box-shadow:0 6px 28px rgba(0,0,0,.4);background:var(--surface,#161b22);border:0.5px solid var(--border,#2d3748);font-family:var(--sans);font-size:13px;transition:opacity 120ms ease;"></div>
 </section>
 
 <section class="section" id="v4">
@@ -2049,7 +2049,7 @@ function applyTheme() {
     if (id === 'v0') drawDashboard();
     else if (id === 'v1') { drawV1(); drawV1b(); drawV1c(); drawV1d(); drawHeatmapV1(); }
     else if (id === 'v2') { drawRealMap(); updateMapFill(); updateMapLabels(); drawRegionList(); }
-    else if (id === 'v3') { if(typeof ab_rebuildAll==='function') ab_rebuildAll(); }
+    else if (id === 'v3') { if(typeof ab_init==='function') ab_init(); }
     else if (id === 'v4') { drawGaugesV4(); drawV4a(); drawV4b(); drawV4c(); setTimeout(am_buildChart, 80); }
     else if (id === 'v5') { drawV5a(); drawV5b(); }
   }
@@ -2241,7 +2241,7 @@ function showSection(id, btn) {
     if      (id === 'v0') drawDashboard();
     else if (id === 'v1') { v1InitControls(); drawV1(); drawV1b(); drawV1c(); drawV1d(); drawHeatmapV1(); }
     else if (id === 'v2') { drawRealMap(); updateMapFill(); updateMapLabels(); drawRegionList(); }
-    else if (id === 'v3') { if(typeof ab_rebuildAll==='function') ab_rebuildAll(); }
+    else if (id === 'v3') { if(typeof ab_init==='function') ab_init(); }
     else if (id === 'v4') { drawGaugesV4(); drawV4a(); drawV4b(); drawV4c(); setTimeout(am_buildChart, 80); }
     else if (id === 'v5') { calcDeposit(); drawV5a(); drawV5b(); }
   }), 20);
@@ -2282,17 +2282,35 @@ let mapPath = null;
 
 function getRegionVal(r, year, metric) {
   if (metric === 'ratio') return r['ratio' + year] || r.ratio2024;
-  if (metric === 'price') {
-    const f = { 2001:0.23, 2006:0.33, 2013:0.53, 2018:0.78, 2024:1.0 };
-    return Math.round(r.price2024 * (f[year] || 1));
-  }
-  return r.growth;
+  const PRICES = {
+    'Auckland': {2001:238000,2006:358000,2013:600000,2018:972000,2024:1100000},
+    'Wellington': {2001:208000,2006:279000,2013:445000,2018:711000,2024:750000},
+    'Tauranga': {2001:155000,2006:259000,2013:457000,2018:828000,2024:870000},
+    'Queenstown': {2001:195000,2006:339000,2013:638000,2018:1170000,2024:1350000},
+    'Napier-Hastings': {2001:137000,2006:223000,2013:305000,2018:612000,2024:640000},
+    'Hamilton': {2001:138000,2006:223000,2013:349000,2018:639000,2024:670000},
+    'Nelson': {2001:159000,2006:246000,2013:370000,2018:684000,2024:720000},
+    'Christchurch': {2001:138000,2006:219000,2013:337000,2018:540000,2024:590000},
+    'Dunedin': {2001:111000,2006:175000,2013:305000,2018:522000,2024:580000},
+    'Gisborne': {2001:103000,2006:175000,2013:229000,2018:432000,2024:470000},
+    'Invercargill': {2001:110000,2006:153000,2013:228000,2018:369000,2024:400000},
+    'Palmerston Nth': {2001:112000,2006:170000,2013:265000,2018:558000,2024:580000},
+  };
+  if (metric === 'price') return PRICES[r.name]?.[year] || r.price2024;
+  // growth: % change from previous census year — derived from real regional income × P/I ratio
+  const prevYr = { 2001:null, 2006:2001, 2013:2006, 2018:2013, 2024:2018 };
+  const prev = prevYr[year];
+  if (!prev) return 0;
+  const p1 = PRICES[r.name]?.[prev];
+  const p2 = PRICES[r.name]?.[year];
+  if (!p1 || !p2) return 0;
+  return Math.round((p2 - p1) / p1 * 100);
 }
 
 function metricLabel(metric, val) {
   if (metric === 'ratio') return val.toFixed(1) + '×';
   if (metric === 'price') return '$' + Math.round(val/1000) + 'K';
-  return '+' + val + '%';
+  return (val >= 0 ? '+' : '') + val + '%';
 }
 
 function colorForVal(val, metric) {
@@ -2312,10 +2330,11 @@ function colorForVal(val, metric) {
     if (val >= 350000)  return '#f0a500';
     return '#22c55e';
   }
-  if (val >= 25) return '#7f1d1d';
-  if (val >= 18) return '#b91c1c';
-  if (val >= 12) return '#ef4444';
-  if (val >= 8)  return '#f97316';
+  // growth: period-on-period % (typically 20–70%)
+  if (val >= 60) return '#7f1d1d';
+  if (val >= 45) return '#b91c1c';
+  if (val >= 30) return '#ef4444';
+  if (val >= 15) return '#f97316';
   return '#f0a500';
 }
 
@@ -2405,10 +2424,11 @@ window.setMetric = function(m, btn) {
   mapMetric = m;
   document.querySelectorAll('.metric-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  const titles = { ratio:'P/I Ratio', price:'Median Price', growth:'Price Growth' };
+  const titles = { ratio:'P/I Ratio', price:'Median Price', growth:'Price Growth % (since prev. census)' };
   const t = document.getElementById('map-chart-title');
   if (t) t.innerHTML = 'NZ Regional ' + titles[m] + ' — <span id="map-year-label">' + mapYear + '</span>';
   updateMapFill(); updateMapLabels(); drawRegionList();
+  if (selectedRegion) drawRegionTrend(selectedRegion);
 };
 
 window.togglePlay = function() {
@@ -2576,30 +2596,53 @@ function drawRegionTrend(name) {
   const reg = DATA.regions.find(r => r.name === name);
   if (!reg) return;
   document.getElementById('region-detail-title').textContent = name;
-  const years = [2001,2006,2013,2018,2024];
-  const ratios = years.map(y => reg['ratio'+y]);
+
+  const metric = mapMetric;
+  const years = metric === 'growth' ? [2006,2013,2018,2024] : [2001,2006,2013,2018,2024];
+  const vals = years.map(y => getRegionVal(reg, y, metric));
+
+  const yFmt = metric === 'ratio'
+    ? d => d + '×'
+    : metric === 'price'
+      ? d => '$' + Math.round(d/1000) + 'K'
+      : d => d + '%';
+
+  const prevYrMap = { 2001:'—', 2006:'01→06', 2013:'06→13', 2018:'13→18', 2024:'18→24' };
+  const tipLabel = (year, v) => {
+    if (metric === 'ratio')  return '<strong>'+year+'</strong>P/I: '+v.toFixed(1)+'×';
+    if (metric === 'price')  return '<strong>'+year+'</strong>Price: $'+Math.round(v/1000)+'K';
+    return '<strong>'+prevYrMap[year]+'</strong> Price growth: '+(v>=0?'+':'')+v+'%';
+  };
+
   const W = (document.getElementById('chart-region-trend').getBoundingClientRect().width) || 260;
   const H = 180;
-  const m = { t:16, r:14, b:32, l:46 };
+  const m = { t:16, r:14, b:32, l: metric === 'price' ? 58 : 46 };
   const w = W-m.l-m.r, h = H-m.t-m.b;
   const svg = d3.select('#chart-region-trend').attr('width',W).attr('height',H);
   svg.selectAll('*').remove();
   const g = svg.append('g').attr('transform','translate('+m.l+','+m.t+')');
   const x = d3.scalePoint().domain(years).range([0,w]);
-  const y = d3.scaleLinear().domain([0, d3.max(ratios)+1]).range([h,0]);
+  const yPad = metric === 'growth' ? 5 : 0;
+  const yMin2 = metric === 'growth' ? Math.max(0, d3.min(vals) - yPad) : 0;
+  const yMax = metric === 'growth' ? d3.max(vals) + yPad : d3.max(vals) * 1.15;
+  const y = d3.scaleLinear().domain([yMin2, yMax]).range([h,0]);
+
   y.ticks(4).forEach(v => g.append('line').attr('class','grid-line').attr('x1',0).attr('x2',w).attr('y1',y(v)).attr('y2',y(v)));
   g.append('g').attr('class','axis').attr('transform','translate(0,'+h+')').call(d3.axisBottom(x).tickFormat(d3.format('d')));
-  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'×'));
-  const area = d3.area().x((_,i)=>x(years[i])).y0(h).y1((_,i)=>y(ratios[i])).curve(d3.curveCatmullRom.alpha(0.5));
-  g.append('path').datum(ratios).attr('d',area).attr('fill','rgba(240,165,0,0.1)');
-  const line = d3.line().x((_,i)=>x(years[i])).y((_,i)=>y(ratios[i])).curve(d3.curveCatmullRom.alpha(0.5));
-  const path = g.append('path').datum(ratios).attr('d',line).attr('fill','none').attr('stroke','#f0a500').attr('stroke-width',2.5);
+  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(4).tickFormat(yFmt));
+
+  const area = d3.area().x((_,i)=>x(years[i])).y0(h).y1((_,i)=>y(vals[i])).curve(d3.curveCatmullRom.alpha(0.5));
+  g.append('path').datum(vals).attr('d',area).attr('fill','rgba(240,165,0,0.1)');
+
+  const line = d3.line().x((_,i)=>x(years[i])).y((_,i)=>y(vals[i])).curve(d3.curveCatmullRom.alpha(0.5));
+  const path = g.append('path').datum(vals).attr('d',line).attr('fill','none').attr('stroke','#f0a500').attr('stroke-width',2.5);
   const L = path.node().getTotalLength();
   path.attr('stroke-dasharray',L).attr('stroke-dashoffset',L).transition().duration(700).ease(d3.easeQuadOut).attr('stroke-dashoffset',0);
-  ratios.forEach((v,i) => {
+
+  vals.forEach((v,i) => {
     g.append('circle').attr('cx',x(years[i])).attr('cy',y(v)).attr('r',0)
-      .attr('fill', colorForVal(v,'ratio'))
-      .on('mousemove', evt => tip(evt,'<strong>'+years[i]+'</strong>P/I: '+v+'×'))
+      .attr('fill', colorForVal(v, metric))
+      .on('mousemove', evt => tip(evt, tipLabel(years[i], v)))
       .on('mouseleave', tipOff)
       .transition().delay(i*120).duration(300).attr('r',5);
     if (years[i]===mapYear) {
@@ -2607,11 +2650,27 @@ function drawRegionTrend(name) {
         .attr('fill','none').attr('stroke','#f0a500').attr('stroke-width',1.5).attr('opacity',0.5);
     }
   });
-  document.getElementById('region-kpis').innerHTML =
-    '<div class="region-kpi-item"><div class="v" style="color:#22c55e">'+reg.ratio2001+'×</div><div class="l">2001</div></div>' +
-    '<div class="region-kpi-item"><div class="v" style="color:#f0a500">'+reg.ratio2018+'×</div><div class="l">2018</div></div>' +
-    '<div class="region-kpi-item"><div class="v" style="color:#ef4444">'+reg.ratio2024+'×</div><div class="l">2024</div></div>' +
-    '<div class="region-kpi-item"><div class="v" style="color:#a855f7">$'+Math.round(reg.price2024/1000)+'K</div><div class="l">Price 2024</div></div>';
+
+  let kpiHtml;
+  if (metric === 'growth') {
+    // Show each census period's growth
+    const periods = [{yr:2006,lbl:'01→06'},{yr:2013,lbl:'06→13'},{yr:2018,lbl:'13→18'},{yr:2024,lbl:'18→24'}];
+    const gc = ['#22c55e','#f0a500','#ef4444','#a855f7'];
+    kpiHtml = periods.map((p,i) => {
+      const v = getRegionVal(reg, p.yr, 'growth');
+      return '<div class="region-kpi-item"><div class="v" style="color:'+gc[i]+'">'+(v>=0?'+':'')+v+'%</div><div class="l">'+p.lbl+'</div></div>';
+    }).join('');
+  } else {
+    const kpiYears = [2001, 2018, 2024];
+    const kpiColors = ['#22c55e','#f0a500','#ef4444'];
+    kpiHtml = kpiYears.map((yr,i) => {
+      const v = getRegionVal(reg, yr, metric);
+      return '<div class="region-kpi-item"><div class="v" style="color:'+kpiColors[i]+'">'+metricLabel(metric,v)+'</div><div class="l">'+yr+'</div></div>';
+    }).join('') + (metric !== 'price'
+      ? '<div class="region-kpi-item"><div class="v" style="color:#a855f7">$'+Math.round(reg.price2024/1000)+'K</div><div class="l">Price 2024</div></div>'
+      : '<div class="region-kpi-item"><div class="v" style="color:#a855f7">'+reg.ratio2024+'×</div><div class="l">P/I 2024</div></div>');
+  }
+  document.getElementById('region-kpis').innerHTML = kpiHtml;
 }
 
 function initMap() {
@@ -4565,6 +4624,7 @@ function ab_updateInsights(){
 
 /* ═══════ REBUILD ALL ═══════ */
 function ab_rebuildAll(){
+  ab_buildYearButtons();
   ab_buildLegend();
   ab_updateMainChart();
   ab_buildTrendLegend();
