@@ -565,6 +565,15 @@
   /* Tab indicator dots */
   .tab-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 
+  /* Region dropdown — themed options */
+  #calc-region { color-scheme: dark; }
+  [data-theme="light"] #calc-region { color-scheme: light; }
+  #calc-region option {
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--mono);
+  }
+
   /* ─── METRIC PILLS ─── */
   .metric-pill {
     font-family: var(--mono);
@@ -1068,6 +1077,10 @@
 }
 #v3-abhay .kpi-chip span{font-size:10px;color:var(--text-inv2);display:block;margin-top:1px}
 #v3-abhay .kpi-chip.stress b{color:var(--bar-q1)}
+/* KPI chips standalone (cover removed) */
+#v3-abhay > .cover-kpis{margin-top:0}
+#v3-abhay > .cover-kpis .kpi-chip{background:var(--surface,rgba(255,255,255,.04));border:1px solid var(--border)}
+#v3-abhay > .cover-kpis .kpi-chip span{color:var(--text-3,#94a3b8)}
 #v3-abhay /* ── Insight strip ── */
 .insight-strip{
   display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;
@@ -1297,11 +1310,11 @@
   <button class="nav-tab active" onclick="showSection('v0',this)" style="border-right:1px solid var(--border);margin-right:0.5rem;">
     <span class="tab-dot" style="background:#14b8a6"></span>Dashboard
   </button>
-  <button class="nav-tab" onclick="showSection('v1',this)">
-    <span class="tab-dot" style="background:#f0a500"></span>Price vs Income
-  </button>
   <button class="nav-tab" onclick="showSection('v2',this)">
     <span class="tab-dot" style="background:#3b82f6"></span>Regional Map
+  </button>
+  <button class="nav-tab" onclick="showSection('v1',this)">
+    <span class="tab-dot" style="background:#f0a500"></span>Price vs Income
   </button>
   <button class="nav-tab" onclick="showSection('v3',this)">
     <span class="tab-dot" style="background:#ef4444"></span>Cost Burden
@@ -1648,6 +1661,11 @@
   <div class="map-container">
     <div class="chart-card" style="margin-bottom:0;position:relative;">
       <div class="chart-title" id="map-chart-title">NZ Regional P/I Ratio — <span id="map-year-label">2024</span></div>
+      <div class="map-zoom-controls" style="position:absolute;top:48px;right:16px;z-index:5;display:flex;flex-direction:column;gap:4px;">
+        <button onclick="mapZoomIn()" title="Zoom in" style="width:30px;height:30px;border-radius:5px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:1rem;font-weight:700;cursor:pointer;line-height:1;">+</button>
+        <button onclick="mapZoomOut()" title="Zoom out" style="width:30px;height:30px;border-radius:5px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:1rem;font-weight:700;cursor:pointer;line-height:1;">−</button>
+        <button onclick="mapZoomReset()" title="Reset zoom" style="width:30px;height:30px;border-radius:5px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:0.8rem;cursor:pointer;line-height:1;">⟲</button>
+      </div>
       <svg id="chart-map" class="chart-area" height="540"></svg>
     </div>
     <div>
@@ -1677,33 +1695,8 @@
     <p>Real Stats NZ HIHC data (2019–2025) — select years to compare, toggle grouped or stacked, show/hide threshold lines, click legend to isolate quintiles.</p>
   </div>
   <div id="v3-abhay">
-    <!-- Theme bar -->
-<div class="theme-bar">
-  <span class="theme-bar-label">NZ Housing Affordability Crisis · View 3</span>
-  <div class="theme-switcher">
-    <button class="theme-btn active" onclick="ab_setTheme('light',this)">☀ Light</button>
-    <button class="theme-btn" onclick="ab_setTheme('dark',this)">◑ Dark</button>
-  </div>
-</div>
-
-<!-- Hero -->
-<div class="cover">
-  <div class="cover-inner">
-    <div>
-      <div class="cover-eyebrow">View 3 · Cost Burden · Stats NZ 2019–2025</div>
-      <div class="cover-title">Who Wears<br>the <em>Burden?</em></div>
-      <div class="cover-sub">Housing costs as a share of household disposable income, broken down by income quintile. New Zealand's lowest-income households consistently spend two to three times more of their income on housing than the highest earners — and the gap is growing.</div>
-    </div>
-    <div class="cover-meta">
-      <div class="cover-pill">v3 · Milestone 3</div><br>
-      COMPX532 / DSIGN532<br>
-      University of Waikato<br><br>
-      Data: Stats NZ<br>
-      HIHC 2019–2025<br>
-    </div>
-  </div>
-  <div class="cover-kpis" id="ab-coverKpis"></div>
-</div>
+<!-- KPI chips (populated by JS) -->
+<div class="cover-kpis" id="ab-coverKpis" style="margin-bottom:1.4rem;"></div>
 
 <!-- Insight strip -->
 <div class="section-label">Key findings · <span id="ab-insightYear">latest year selected</span></div>
@@ -1781,9 +1774,8 @@
   <div class="source">Source: Stats NZ — Household Income and Housing-Cost Statistics, Year Ended June 2019–2025</div>
 </div>
 
-</div><!-- /page -->
-  </div>
   <div class="ab-tooltip-box" id="ab-tooltip" style="position:fixed;z-index:9999;pointer-events:none;opacity:0;min-width:200px;max-width:240px;padding:14px 16px;border-radius:10px;box-shadow:0 6px 28px rgba(0,0,0,.4);background:var(--surface,#161b22);border:0.5px solid var(--border,#2d3748);font-family:var(--sans);font-size:13px;transition:opacity 120ms ease;"></div>
+  </div>
 </section>
 
 <section class="section" id="v4">
@@ -1953,7 +1945,7 @@
       </div>
       <div class="v5-slider-row">
         <label>Region
-          <select id="calc-region" onchange="calcDeposit()" style="background:surfaceColor();border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:0.75rem;padding:2px 6px;border-radius:3px;margin-left:0.5rem;">
+          <select id="calc-region" onchange="calcDeposit()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:0.75rem;padding:2px 6px;border-radius:3px;margin-left:0.5rem;cursor:pointer;">
             <option value="auckland">Auckland</option>
             <option value="wellington" selected>Wellington</option>
             <option value="christchurch">Christchurch</option>
@@ -2482,7 +2474,10 @@ function drawRealMap() {
   grad.append('stop').attr('offset','50%').attr('stop-color','#f0a500');
   grad.append('stop').attr('offset','100%').attr('stop-color','#7f1d1d');
 
-  svg.selectAll('.region-path')
+  // Zoomable layer — all geography goes in here; legend stays fixed on the svg
+  const zoomLayer = svg.append('g').attr('class','map-zoom-layer');
+
+  zoomLayer.selectAll('.region-path')
     .data(NZ_GEOJSON.features)
     .enter().append('path')
       .attr('class','region-path')
@@ -2516,7 +2511,7 @@ function drawRealMap() {
         document.getElementById('region-detail-card').style.display = 'block';
       });
 
-  svg.selectAll('.region-label')
+  zoomLayer.selectAll('.region-label')
     .data(NZ_GEOJSON.features)
     .enter().append('text')
       .attr('class','region-label')
@@ -2531,7 +2526,7 @@ function drawRealMap() {
         return abbr[feat.properties.name] || feat.properties.name;
       });
 
-  svg.selectAll('.region-val-label')
+  zoomLayer.selectAll('.region-val-label')
     .data(NZ_GEOJSON.features)
     .enter().append('text')
       .attr('class','region-val-label')
@@ -2547,8 +2542,37 @@ function drawRealMap() {
   svg.append('text').attr('x',legX).attr('y',legY-4).attr('font-family','Space Mono').attr('font-size','8px').attr('fill', textMuted()).text('Affordable');
   svg.append('text').attr('x',legX+legW).attr('y',legY-4).attr('text-anchor','end').attr('font-family','Space Mono').attr('font-size','8px').attr('fill', textMuted()).text('Crisis');
 
+  // ── ZOOM behavior: wheel/pinch to zoom, drag to pan, buttons for control ──
+  mapZoomBehavior = d3.zoom()
+    .scaleExtent([1, 8])
+    .translateExtent([[0, 0], [W, H]])
+    .on('zoom', (evt) => {
+      zoomLayer.attr('transform', evt.transform);
+      // Keep stroke widths and label sizes readable at any zoom level
+      const k = evt.transform.k;
+      zoomLayer.selectAll('.region-path').attr('stroke-width', 1 / k);
+      zoomLayer.selectAll('.region-label').attr('font-size', (8 / Math.sqrt(k)) + 'px');
+      zoomLayer.selectAll('.region-val-label').attr('font-size', (9 / Math.sqrt(k)) + 'px');
+    });
+  svg.call(mapZoomBehavior).on('dblclick.zoom', null);
+
   updateMapFill(); updateMapLabels();
 }
+
+// ── Map zoom controls ──
+let mapZoomBehavior = null;
+window.mapZoomIn = function() {
+  if (!mapZoomBehavior) return;
+  d3.select('#chart-map').transition().duration(300).call(mapZoomBehavior.scaleBy, 1.5);
+};
+window.mapZoomOut = function() {
+  if (!mapZoomBehavior) return;
+  d3.select('#chart-map').transition().duration(300).call(mapZoomBehavior.scaleBy, 1 / 1.5);
+};
+window.mapZoomReset = function() {
+  if (!mapZoomBehavior) return;
+  d3.select('#chart-map').transition().duration(400).call(mapZoomBehavior.transform, d3.zoomIdentity);
+};
 
 function updateMapFill() {
   d3.select('#chart-map').selectAll('.region-path')
@@ -2976,6 +3000,36 @@ function drawV1c() {
   const li=DATA.years.length-1;
   g.append('text').attr('x',w-4).attr('y',y(idxP[li])-6).attr('text-anchor','end').attr('font-family','Space Mono').attr('font-size','9px').attr('fill','#f0a500').text(Math.round(idxP[li]));
   g.append('text').attr('x',w-4).attr('y',y(idxI[li])+12).attr('text-anchor','end').attr('font-family','Space Mono').attr('font-size','9px').attr('fill','#22c55e').text(Math.round(idxI[li]));
+
+  // Hover tooltip + tracking dots
+  const v1cGuide = g.append('line').attr('y1',0).attr('y2',h)
+    .attr('stroke', currentTheme==="light"?'rgba(0,0,0,0.25)':'rgba(255,255,255,0.3)')
+    .attr('stroke-width',1).attr('stroke-dasharray','3,3').style('display','none');
+  const v1cDotP = g.append('circle').attr('r',4).attr('fill','#f0a500')
+    .attr('stroke', currentTheme==="light"?'#fff':'#0d1117').attr('stroke-width',1.5).style('display','none');
+  const v1cDotI = g.append('circle').attr('r',4).attr('fill','#22c55e')
+    .attr('stroke', currentTheme==="light"?'#fff':'#0d1117').attr('stroke-width',1.5).style('display','none');
+  g.append('rect').attr('width',w).attr('height',h).attr('fill','transparent').attr('cursor','crosshair')
+    .on('mousemove', function(evt){
+      const [mx] = d3.pointer(evt, this);
+      const yr = Math.max(1990, Math.min(2024, Math.round(x.invert(mx))));
+      const i = DATA.years.indexOf(yr);
+      if (i < 0) return;
+      v1cGuide.style('display',null).attr('x1',x(yr)).attr('x2',x(yr));
+      v1cDotP.style('display',null).attr('cx',x(yr)).attr('cy',y(idxP[i]));
+      v1cDotI.style('display',null).attr('cx',x(yr)).attr('cy',y(idxI[i]));
+      const gap = Math.round(idxP[i]) - Math.round(idxI[i]);
+      tip(evt, `<strong>${yr}</strong>`
+        + `<span style="color:#f0a500">●</span> House prices: ${Math.round(idxP[i])}<br>`
+        + `<span style="color:#22c55e">●</span> Wages: ${Math.round(idxI[i])}<br>`
+        + `<span style="color:${gap>0?'#ef4444':'#22c55e'}">Gap: ${gap>0?'+':''}${gap} index pts</span> · (1990 = 100)`);
+    })
+    .on('mouseleave', function(){
+      v1cGuide.style('display','none');
+      v1cDotP.style('display','none');
+      v1cDotI.style('display','none');
+      tipOff();
+    });
 }
 
 function drawV1d() {
@@ -4474,7 +4528,7 @@ function ab_externalTooltipHandler({ chart, tooltip }){
     ${rows}${changeStr}
   `;
 
-  ab_positionTooltip(el, chart.canvas);
+  ab_positionTooltip(el, chart.canvas, tooltip);
   el.style.opacity = 1;
 }
 
@@ -4496,17 +4550,21 @@ function ab_trendTooltipHandler({ chart, tooltip }){
   });
 
   el.innerHTML = `<div class="tt-head">Year ${year}</div><div class="tt-sub">Housing cost share</div>${rows}`;
-  ab_positionTooltip(el, chart.canvas);
+  ab_positionTooltip(el, chart.canvas, tooltip);
   el.style.opacity = 1;
 }
 
-function ab_positionTooltip(el, canvas){
+function ab_positionTooltip(el, canvas, tooltip){
   const rect = canvas.getBoundingClientRect();
-  const x = rect.left + window.scrollX + rect.width / 2;
-  const y = rect.top + window.scrollY;
-  const tw = 230, th = 180;
-  const left = Math.min(x + 20, window.innerWidth - tw - 20);
-  const top = Math.max(y - 40, 10);
+  const tw = el.offsetWidth || 230, th = el.offsetHeight || 180;
+  const caretX = tooltip?.caretX ?? rect.width / 2;
+  const caretY = tooltip?.caretY ?? 40;
+  let left = rect.left + caretX + 18;
+  let top  = rect.top + caretY - th / 2;
+  // Flip to left side if overflowing right edge
+  if (left + tw > window.innerWidth - 12) left = rect.left + caretX - tw - 18;
+  // Clamp vertically within viewport
+  top = Math.max(10, Math.min(top, window.innerHeight - th - 10));
   el.style.left = left + 'px';
   el.style.top = top + 'px';
 }
