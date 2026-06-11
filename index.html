@@ -726,7 +726,41 @@
   .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.5rem; }
   @media(max-width:800px){ .grid-3 { grid-template-columns:1fr; } }
 
-  /* ─── DASHBOARD ─── */
+  /* ─── V1 JEEL CONTROLS ─── */
+  .v1-controls {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 0.8rem 1.5rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1rem;
+  }
+  .v1-ctrl-group { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .v1-ctrl-label {
+    font-family: var(--mono); font-size: 0.58rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap;
+  }
+  .v1-check {
+    display: flex; align-items: center; gap: 0.3rem; cursor: pointer;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim);
+    padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border);
+    background: var(--surface2); transition: border-color 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+  .v1-check:hover { border-color: var(--amber); }
+  .v1-check input[type=checkbox] { accent-color: var(--amber); cursor: pointer; }
+  .v1-select {
+    font-family: var(--mono); font-size: 0.68rem; padding: 3px 6px;
+    border-radius: 4px; border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text);
+    cursor: pointer;
+  }
+  .v1-select:focus { outline: 1px solid var(--amber); }
+  .v1-reset-btn {
+    font-family: var(--mono); font-size: 0.65rem; padding: 4px 10px;
+    border-radius: 4px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .v1-reset-btn:hover { color: var(--amber); border-color: var(--amber); }
+
   .db-banner {
     display: flex; align-items: center; flex-wrap: wrap;
     background: var(--surface); border: 1px solid var(--border);
@@ -968,8 +1002,247 @@
 }
 
 
+
+/* ── ABHAY VIEW 3 SCOPED CSS ── */
+#v3-abhay .page{max-width:1080px;margin:0 auto}
+#v3-abhay /* ── Theme bar ── */
+.theme-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;background:var(--surface);
+  border:0.5px solid var(--border);border-radius:var(--r-xl);
+  margin-bottom:20px;box-shadow:var(--shadow-xs);
+}
+#v3-abhay .theme-bar-label{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--text-3)}
+#v3-abhay .theme-switcher{display:flex;gap:6px}
+#v3-abhay .theme-btn{
+  padding:6px 18px;border-radius:var(--r-pill);font-size:12px;font-weight:500;
+  font-family:var(--font-sans);cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--text-2);
+  transition:all var(--t-fast) var(--ease-out);
+}
+#v3-abhay .theme-btn.active{background:var(--text-1);color:var(--bg);border-color:var(--text-1)}
+#v3-abhay /* ── Cover / Hero ── */
+.cover{
+  background:var(--surface-ink);
+  border-radius:var(--r-xl);
+  padding:52px 60px 44px;
+  margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+#v3-abhay .cover::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 50% 70% at 95% 40%,rgba(168,196,0,.07) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 55% at 5% 90%,rgba(37,99,168,.14) 0%,transparent 55%),
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.018) 39px,rgba(255,255,255,.018) 40px);
+  pointer-events:none;
+}
+#v3-abhay .cover-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:start;gap:40px}
+#v3-abhay .cover-eyebrow{
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  letter-spacing:1.8px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+#v3-abhay .cover-title{
+  font-family:var(--font-display);font-size:44px;font-weight:700;
+  color:var(--text-inv);line-height:1.1;letter-spacing:-.6px;
+}
+#v3-abhay .cover-title em{font-style:italic;font-weight:500;color:var(--accent)}
+#v3-abhay .cover-sub{font-size:13px;color:rgba(238,242,248,.5);margin-top:14px;line-height:1.7;max-width:500px}
+#v3-abhay .cover-meta{
+  text-align:right;font-family:var(--font-mono);font-size:10px;
+  color:rgba(238,242,248,.3);line-height:1.9;white-space:nowrap;flex-shrink:0;
+}
+#v3-abhay .cover-pill{
+  display:inline-block;background:var(--accent-muted);border:1px solid var(--accent-border);
+  color:var(--accent);font-family:var(--font-mono);font-size:10px;font-weight:500;
+  padding:3px 11px;border-radius:var(--r-pill);margin-bottom:10px;
+}
+#v3-abhay .cover-kpis{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap;position:relative;z-index:1}
+#v3-abhay .kpi-chip{
+  background:rgba(255,255,255,.05);border:1px solid var(--border-ink);
+  border-radius:var(--r-md);padding:8px 14px;
+}
+#v3-abhay .kpi-chip b{
+  font-family:var(--font-mono);font-size:18px;font-weight:600;
+  color:var(--accent);display:block;line-height:1.2;
+}
+#v3-abhay .kpi-chip span{font-size:10px;color:var(--text-inv2);display:block;margin-top:1px}
+#v3-abhay .kpi-chip.stress b{color:var(--bar-q1)}
+#v3-abhay /* ── Insight strip ── */
+.insight-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;
+}
+#v3-abhay .ins-card{
+  background:var(--surface);border:0.5px solid var(--border);
+  border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow-xs);
+  transition:box-shadow var(--t-fast) var(--ease-out);
+}
+#v3-abhay .ins-card:hover{box-shadow:var(--shadow-sm)}
+#v3-abhay .ins-val{
+  font-family:var(--font-mono);font-size:22px;font-weight:600;
+  line-height:1.1;margin-bottom:4px;
+}
+#v3-abhay .ins-label{font-size:11px;color:var(--text-3);line-height:1.45;margin-bottom:6px}
+#v3-abhay .ins-delta{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  padding:2px 8px;border-radius:var(--r-sm);
+}
+#v3-abhay .delta-up{background:var(--stress-bg);color:var(--stress-text);border:0.5px solid var(--stress-border)}
+#v3-abhay .delta-down{background:var(--afford-bg);color:var(--afford-text);border:0.5px solid var(--afford-border)}
+#v3-abhay .delta-neutral{background:var(--neutral-bg);color:var(--neutral-text);border:0.5px solid var(--neutral-border)}
+#v3-abhay /* ── Chart card ── */
+.chart-card{
+  background:var(--surface);border:0.5px solid var(--border);
+  border-radius:var(--r-xl);box-shadow:var(--shadow-sm);
+  overflow:hidden;margin-bottom:16px;
+}
+#v3-abhay .chart-header{
+  padding:20px 24px 0;
+  display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+#v3-abhay .chart-title-group{}
+#v3-abhay .chart-title{font-size:15px;font-weight:600;color:var(--text-1);margin-bottom:3px}
+#v3-abhay .chart-sub{font-size:10px;color:var(--text-3);font-family:var(--font-mono)}
+#v3-abhay /* ── Controls ── */
+.controls-zone{
+  padding:14px 24px 0;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+#v3-abhay .ctrl-label{
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  letter-spacing:.8px;text-transform:uppercase;color:var(--text-3);white-space:nowrap;
+}
+#v3-abhay .toggle-group{display:flex;gap:4px;flex-wrap:wrap}
+#v3-abhay .toggle-btn{
+  padding:5px 13px;border-radius:var(--r-pill);
+  font-size:12px;font-weight:500;font-family:var(--font-sans);
+  cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--text-2);
+  transition:all var(--t-fast) var(--ease-out);
+}
+#v3-abhay .toggle-btn:hover{background:var(--surface-2);color:var(--text-1)}
+#v3-abhay .toggle-btn.active{background:var(--text-1);color:var(--surface);border-color:var(--text-1)}
+#v3-abhay .sep{width:0.5px;height:22px;background:var(--border);flex-shrink:0}
+#v3-abhay .thresh-btn{
+  padding:5px 12px;border-radius:var(--r-pill);
+  font-size:12px;font-weight:500;font-family:var(--font-sans);
+  cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--text-2);
+  display:flex;align-items:center;gap:5px;
+  transition:all var(--t-fast) var(--ease-out);
+}
+#v3-abhay .thresh-btn.on-30{background:var(--stress-bg);color:var(--stress-text);border-color:var(--stress-border)}
+#v3-abhay .thresh-btn.on-40{background:#F0D8D8;color:#5A0A0A;border-color:#C09090}
+#v3-abhay .thresh-dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
+#v3-abhay /* ── Legend ── */
+.legend{
+  display:flex;flex-wrap:wrap;gap:6px 16px;
+  padding:12px 24px 0;
+}
+#v3-abhay .leg-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:500;color:var(--text-2);
+  cursor:pointer;padding:4px 8px;border-radius:var(--r-sm);
+  transition:all var(--t-fast) var(--ease-out);user-select:none;
+}
+#v3-abhay .leg-item:hover{background:var(--surface-2)}
+#v3-abhay .leg-item.dimmed{opacity:.3}
+#v3-abhay .leg-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0;transition:transform var(--t-fast)}
+#v3-abhay .leg-item:hover .leg-swatch{transform:scale(1.25)}
+#v3-abhay .leg-range{font-family:var(--font-mono);font-size:9px;color:var(--text-3);margin-left:2px}
+#v3-abhay /* ── Chart canvas wrapper ── */
+.chart-wrap{padding:16px 24px 8px;position:relative}
+#v3-abhay .canvas-holder{position:relative;width:100%;height:340px}
+#v3-abhay /* ── Trend chart ── */
+.trend-card{
+  background:var(--surface);border:0.5px solid var(--border);
+  border-radius:var(--r-xl);box-shadow:var(--shadow-sm);
+  overflow:hidden;margin-bottom:16px;
+}
+#v3-abhay .trend-canvas-holder{position:relative;width:100%;height:260px}
+#v3-abhay /* ── Heatmap ── */
+.heatmap-card{
+  background:var(--surface);border:0.5px solid var(--border);
+  border-radius:var(--r-xl);box-shadow:var(--shadow-sm);
+  overflow:hidden;margin-bottom:16px;
+}
+#v3-abhay .heatmap-grid{
+  display:grid;grid-template-columns:80px repeat(7,1fr);
+  gap:3px;padding:16px 24px 20px;
+}
+#v3-abhay .hm-label{
+  font-family:var(--font-mono);font-size:10px;color:var(--text-3);
+  display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-weight:500;
+}
+#v3-abhay .hm-year{
+  font-family:var(--font-mono);font-size:10px;color:var(--text-3);
+  text-align:center;padding-bottom:6px;
+}
+#v3-abhay .hm-cell{
+  border-radius:var(--r-sm);height:44px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:11px;font-weight:500;
+  cursor:pointer;transition:all var(--t-fast) var(--ease-out);position:relative;
+}
+#v3-abhay .hm-cell:hover{transform:scale(1.05);z-index:2;box-shadow:var(--shadow-md)}
+#v3-abhay .hm-cell .hm-val{font-size:11px;font-weight:600}
+#v3-abhay /* ── Tooltip ── */
+.tooltip{
+  position:fixed;
+  background:var(--surface);border:0.5px solid var(--border);
+  border-radius:var(--r-lg);
+  box-shadow:0 6px 28px rgba(15,25,36,.13),0 2px 6px rgba(15,25,36,.08);
+  padding:14px 16px;pointer-events:none;opacity:0;
+  transition:opacity 120ms var(--ease-out);z-index:1000;min-width:200px;max-width:240px;
+}
+#v3-abhay .tt-head{font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:2px}
+#v3-abhay .tt-sub{font-size:10px;color:var(--text-3);font-family:var(--font-mono);margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--border)}
+#v3-abhay .tt-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:0.5px solid var(--border-subtle)}
+#v3-abhay .tt-row:last-child{border-bottom:none}
+#v3-abhay .tt-key{font-size:11px;color:var(--text-2)}
+#v3-abhay .tt-val{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--text-1)}
+#v3-abhay .tt-badge{display:inline-block;padding:1px 6px;border-radius:var(--r-xs);font-size:9px;font-weight:600;margin-left:4px}
+#v3-abhay .tt-stress{background:var(--stress-bg);color:var(--stress-text);border:0.5px solid var(--stress-border)}
+#v3-abhay .tt-afford{background:var(--afford-bg);color:var(--afford-text);border:0.5px solid var(--afford-border)}
+#v3-abhay /* ── Source footer ── */
+.source{
+  font-family:var(--font-mono);font-size:10px;color:var(--text-3);
+  padding:10px 24px 16px;border-top:0.5px solid var(--border-subtle);
+}
+#v3-abhay /* ── Section label ── */
+.section-label{
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);
+  margin-bottom:8px;padding-left:2px;display:flex;align-items:center;gap:8px;
+}
+#v3-abhay .section-label::after{content:'';flex:1;height:0.5px;background:var(--border)}
+#v3-abhay /* ── View tabs ── */
+.tab-header{
+  background:var(--surface-ink);
+  border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:16px;
+}
+#v3-abhay .tab-nav{display:flex;padding:0 20px;border-bottom:1px solid var(--border-ink)}
+#v3-abhay .tab-btn{
+  padding:10px 14px;font-size:11px;font-weight:500;
+  color:rgba(238,242,248,.38);border-bottom:2px solid transparent;
+  white-space:nowrap;cursor:pointer;letter-spacing:.1px;font-family:var(--font-sans);
+  background:none;border-top:none;border-left:none;border-right:none;
+  transition:all var(--t-fast) var(--ease-out);
+}
+#v3-abhay .tab-btn:hover{color:var(--text-inv);background:rgba(255,255,255,.04)}
+#v3-abhay .tab-btn.active{color:var(--text-inv);border-bottom-color:var(--accent)}
+#v3-abhay .tab-panel{display:none}
+#v3-abhay .tab-panel.active{display:block}
+
+
+/* Abhay theme buttons sync */
+:root:not([data-theme="light"]) #v3-abhay .toggle-btn.active{background:var(--ab-accent,#A8C400);color:#0F1924;border-color:#A8C400}
+:root:not([data-theme="light"]) #v3-abhay .theme-btn.active{background:var(--ab-accent,#A8C400);color:#0F1924;border-color:#A8C400}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js"></script>
 </head>
 <body>
 
@@ -989,17 +1262,17 @@
     <div class="counter-block">
       <div class="counter-label">NZ Median House Price — 2024</div>
       <div class="counter-value" id="hero-counter">$0</div>
-      <div class="counter-note">↑ 310% since 2000 · Source: REINZ</div>
+      <div class="counter-note">↑ 310% since 2000 (nominal) · Source: REINZ</div>
     </div>
 
     <div class="hero-stats">
       <div class="hero-stat">
         <span class="val red">6.3×</span>
-        <span class="lbl">Auckland Price-to-Income</span>
+        <span class="lbl">NZ National Price-to-Income</span>
       </div>
       <div class="hero-stat">
-        <span class="val">9+ yrs</span>
-        <span class="lbl">Deposit Saving — Auckland</span>
+        <span class="val">8.6 yrs</span>
+        <span class="lbl">Deposit Saving — Auckland (20% savings rate)</span>
       </div>
       <div class="hero-stat">
         <span class="val red">42%</span>
@@ -1060,7 +1333,7 @@
     <div class="db-banner-sep"></div>
     <div class="db-banner-item">
       <div class="db-banner-val" style="color:var(--red)">6.3×</div>
-      <div class="db-banner-lbl">Price-to-Income</div>
+      <div class="db-banner-lbl">NZ National P/I ratio</div>
     </div>
     <div class="db-banner-sep"></div>
     <div class="db-banner-item">
@@ -1070,7 +1343,7 @@
     <div class="db-banner-sep"></div>
     <div class="db-banner-item">
       <div class="db-banner-val" style="color:var(--blue)">+196%</div>
-      <div class="db-banner-lbl">Wage growth '00–'24</div>
+      <div class="db-banner-lbl">HH income growth '00–'24 (nominal)</div>
     </div>
     <div class="db-banner-sep"></div>
     <div class="db-banner-item">
@@ -1089,8 +1362,8 @@
     </div>
     <div class="db-banner-sep"></div>
     <div class="db-banner-item">
-      <div class="db-banner-val" style="color:var(--red)">11.1 yrs</div>
-      <div class="db-banner-lbl">Auckland deposit wait</div>
+      <div class="db-banner-val" style="color:var(--red)">8.6 yrs</div>
+      <div class="db-banner-lbl">Auckland deposit (20% savings)</div>
     </div>
   </div>
 
@@ -1176,8 +1449,8 @@
       </div>
       <svg id="db-chart-deposit" class="db-svg" height="160"></svg>
       <div class="db-card-insight">
-        In 2006 Auckland took <strong style="color:#94a3b8">6.6 yrs</strong>.
-        In 2024 it takes <strong style="color:var(--red)">11.1 yrs</strong> — a <strong style="color:var(--red)">+10.4 yr</strong> blowout.
+        In 2006 Auckland took <strong style="color:#94a3b8">4.9 yrs</strong>.
+        In 2024 it takes <strong style="color:var(--red)">8.6 yrs</strong> — a <strong style="color:var(--red)">+3.7 yr</strong> increase (20% savings rate assumed).
       </div>
     </div>
 
@@ -1250,39 +1523,62 @@
     </div>
     <div class="kpi-strip-item">
       <div class="kpi-strip-val" style="color:var(--green)" id="kpi-income">$122K</div>
-      <div class="kpi-strip-lbl">Median Income 2024</div>
+      <div class="kpi-strip-lbl">Median Household Gross Income 2024</div>
       <div class="kpi-strip-bar"><div class="kpi-strip-fill" style="width:15.8%;background:var(--green)"></div></div>
     </div>
     <div class="kpi-strip-item">
       <div class="kpi-strip-val" style="color:var(--red)">+310%</div>
-      <div class="kpi-strip-lbl">Price growth 2000–2024</div>
+      <div class="kpi-strip-lbl">Price Growth 2000–2024 (nominal, REINZ)</div>
       <div class="kpi-strip-bar"><div class="kpi-strip-fill" style="width:100%;background:var(--red)"></div></div>
     </div>
     <div class="kpi-strip-item">
       <div class="kpi-strip-val" style="color:var(--blue)">+196%</div>
-      <div class="kpi-strip-lbl">Wage growth 2000–2024</div>
+      <div class="kpi-strip-lbl">Household Income Growth 2000–2024 (nominal)</div>
       <div class="kpi-strip-bar"><div class="kpi-strip-fill" style="width:50.5%;background:var(--blue)"></div></div>
     </div>
     <div class="kpi-strip-item">
       <div class="kpi-strip-val" style="color:var(--red)">6.3×</div>
-      <div class="kpi-strip-lbl">Price-to-Income 2024</div>
+      <div class="kpi-strip-lbl">NZ National P/I Ratio 2024</div>
       <div class="kpi-strip-bar"><div class="kpi-strip-fill" style="width:100%;background:var(--red)"></div></div>
     </div>
     <div class="kpi-strip-item">
       <div class="kpi-strip-val" style="color:var(--green)">4.3×</div>
-      <div class="kpi-strip-lbl">Price-to-Income 1990</div>
+      <div class="kpi-strip-lbl">NZ National P/I Ratio 1990</div>
       <div class="kpi-strip-bar"><div class="kpi-strip-fill" style="width:32%;background:var(--green)"></div></div>
+    </div>
+  </div>
+
+  <!-- Jeel's interactive controls -->
+  <div class="v1-controls" id="v1-controls">
+    <div class="v1-ctrl-group">
+      <span class="v1-ctrl-label">SHOW</span>
+      <label class="v1-check"><input type="checkbox" id="v1-show-price" checked onchange="v1UpdateFilters()"><span>House Prices</span></label>
+      <label class="v1-check"><input type="checkbox" id="v1-show-income" checked onchange="v1UpdateFilters()"><span>Income</span></label>
+      <label class="v1-check"><input type="checkbox" id="v1-show-ratio" onchange="v1UpdateFilters()"><span>Ratio overlay</span></label>
+      <label class="v1-check"><input type="checkbox" id="v1-show-events" checked onchange="v1UpdateFilters()"><span>Key events</span></label>
+    </div>
+    <div class="v1-ctrl-group">
+      <span class="v1-ctrl-label">YEAR RANGE</span>
+      <select id="v1-start-year" onchange="v1UpdateFilters()" class="v1-select"></select>
+      <span style="font-family:var(--mono);font-size:0.7rem;color:var(--text-muted);">→</span>
+      <select id="v1-end-year" onchange="v1UpdateFilters()" class="v1-select"></select>
+    </div>
+    <div class="v1-ctrl-group">
+      <button class="v1-reset-btn" onclick="v1ResetFilters()">↺ Reset</button>
     </div>
   </div>
 
   <!-- MAIN: stacked divergence chart -->
   <div class="chart-card" style="padding-bottom:0.5rem;">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.8rem;">
-      <div class="chart-title" style="margin:0;">NZ Median House Price vs Income — Divergence Gap 1990–2024</div>
+      <div>
+        <div class="chart-title" style="margin:0;">NZ Median House Price vs Household Income — Divergence Gap (nominal)</div>
+        <div id="v1-chart-range-lbl" style="font-family:var(--mono);font-size:0.62rem;color:var(--text-muted);margin-top:3px;">1990 – 2024 · REINZ prices · Stats NZ household income</div>
+      </div>
       <div class="legend" style="margin:0;">
-        <div class="legend-item"><div class="legend-line" style="background:var(--amber)"></div>House Price</div>
-        <div class="legend-item"><div class="legend-line" style="background:var(--green)"></div>Income</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(239,68,68,0.25);border:1px solid rgba(239,68,68,0.4);width:14px;height:14px;border-radius:2px;"></div>Gap (crisis zone)</div>
+        <div class="legend-item" id="v1-leg-price"><div class="legend-line" style="background:var(--amber)"></div>House Price</div>
+        <div class="legend-item" id="v1-leg-income"><div class="legend-line" style="background:var(--green)"></div>Income</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(239,68,68,0.25);border:1px solid rgba(239,68,68,0.4);width:14px;height:14px;border-radius:2px;"></div>Gap</div>
       </div>
     </div>
     <svg id="chart-v1" class="chart-area" height="400"></svg>
@@ -1378,62 +1674,118 @@
   <div class="section-header">
     <div class="view-num">View 03 / 05 · Abhay Shrivastav</div>
     <h2>Who bears the heaviest load?</h2>
-    <p>Every dollar spent on housing is a dollar not spent on food, healthcare, or savings. See how the burden falls — and how unequal the squeeze really is.</p>
+    <p>Real Stats NZ HIHC data (2019–2025) — select years to compare, toggle grouped or stacked, show/hide threshold lines, click legend to isolate quintiles.</p>
+  </div>
+  <div id="v3-abhay">
+    <!-- Theme bar -->
+<div class="theme-bar">
+  <span class="theme-bar-label">NZ Housing Affordability Crisis · View 3</span>
+  <div class="theme-switcher">
+    <button class="theme-btn active" onclick="ab_setTheme('light',this)">☀ Light</button>
+    <button class="theme-btn" onclick="ab_setTheme('dark',this)">◑ Dark</button>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="cover">
+  <div class="cover-inner">
+    <div>
+      <div class="cover-eyebrow">View 3 · Cost Burden · Stats NZ 2019–2025</div>
+      <div class="cover-title">Who Wears<br>the <em>Burden?</em></div>
+      <div class="cover-sub">Housing costs as a share of household disposable income, broken down by income quintile. New Zealand's lowest-income households consistently spend two to three times more of their income on housing than the highest earners — and the gap is growing.</div>
+    </div>
+    <div class="cover-meta">
+      <div class="cover-pill">v3 · Milestone 3</div><br>
+      COMPX532 / DSIGN532<br>
+      University of Waikato<br><br>
+      Data: Stats NZ<br>
+      HIHC 2019–2025<br>
+    </div>
+  </div>
+  <div class="cover-kpis" id="ab-coverKpis"></div>
+</div>
+
+<!-- Insight strip -->
+<div class="section-label">Key findings · <span id="ab-insightYear">latest year selected</span></div>
+<div class="insight-strip" id="ab-insightStrip"></div>
+
+<!-- Main chart card -->
+<div class="chart-card">
+  <div class="chart-header">
+    <div class="chart-title-group">
+      <div class="chart-title">Housing cost as % of household disposable income</div>
+      <div class="chart-sub" id="ab-barSub">Grouped by income quintile · Select years to compare</div>
+    </div>
   </div>
 
-  <!-- Dollar breakdown waffle strip -->
-  <div class="chart-card" style="margin-bottom:1.5rem;">
-    <div class="chart-title">For every $100 earned — where does it go? · 2024 · Bottom Quintile Renter (est. from Stats NZ & HES)</div>
-    <div id="waffle-strip" style="margin-top:0.8rem;"></div>
-    <div style="display:flex;gap:1.5rem;margin-top:0.7rem;flex-wrap:wrap;font-family:var(--mono);font-size:0.7rem;">
-      <span><span style="display:inline-block;width:10px;height:10px;background:#ef4444;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Housing ($42)</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:#3b82f6;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Food ($18)</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:#a855f7;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Transport ($12)</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:#f0a500;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Other ($20)</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:#22c55e;border-radius:2px;margin-right:4px;vertical-align:middle;"></span>Savings ($8)</span>
+  <!-- Controls -->
+  <div class="controls-zone">
+    <span class="ctrl-label">Year</span>
+    <div class="toggle-group" id="ab-yearGroup"></div>
+    <div class="sep"></div>
+    <span class="ctrl-label">Stress lines</span>
+    <button class="thresh-btn on-30" id="ab-btn30" onclick="ab_toggleThresh(30)">
+      <span class="thresh-dot"></span>30% stress
+    </button>
+    <button class="thresh-btn" id="ab-btn40" onclick="ab_toggleThresh(40)">
+      <span class="thresh-dot"></span>40% severe
+    </button>
+    <div class="sep"></div>
+    <span class="ctrl-label">View</span>
+    <div class="toggle-group">
+      <button class="toggle-btn active" id="ab-viewGrouped" onclick="ab_setView('grouped',this)">Grouped</button>
+      <button class="toggle-btn" id="ab-viewStacked" onclick="ab_setView('stacked',this)">Stacked</button>
     </div>
   </div>
 
-  <div class="grid-2" style="margin-bottom:1.5rem;">
-    <!-- Slope chart -->
-    <div class="chart-card">
-      <div class="chart-title">Housing Burden by Quintile — Renters 2006 → 2024</div>
-      <div style="font-family:var(--mono);font-size:0.65rem;color:var(--text-muted);margin-bottom:0.5rem;">Each line = one income quintile. Slope = how burden grew.</div>
-      <svg id="chart-v3-slope" class="chart-area" height="280"></svg>
-    </div>
-    <!-- Stacked spend breakdown -->
-    <div class="chart-card">
-      <div class="chart-title">Household Budget Breakdown by Quintile (2024)</div>
-      <div style="font-family:var(--mono);font-size:0.65rem;color:var(--text-muted);margin-bottom:0.5rem;">% of income — stacked by spending category</div>
-      <svg id="chart-v3-stack" class="chart-area" height="280"></svg>
-    </div>
-  </div>
+  <!-- Legend -->
+  <div class="legend" id="ab-legend"></div>
 
-  <div class="chart-card" style="margin-bottom:1.5rem;">
-    <div class="chart-title">Housing Cost as % of Income — All Quintiles × All Tenure Types (2024)</div>
-    <svg id="chart-v3a" class="chart-area" height="300"></svg>
-    <div class="legend" style="margin-top:0.6rem;">
-      <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Renter</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#f0a500"></div>Mortgage-holder</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Owner (no mortgage)</div>
+  <!-- Canvas -->
+  <div class="chart-wrap">
+    <div class="canvas-holder">
+      <canvas id="ab-mainChart" role="img" aria-label="Grouped bar chart of housing cost burden by income quintile across selected years"></canvas>
     </div>
   </div>
+  <div class="source">Source: Stats NZ — Household Income and Housing-Cost Statistics, Year Ended June 2019–2025 · Table 10: Housing costs to household disposable income ratios, by household tenure and quintiles</div>
+</div>
 
-  <div class="grid-2">
-    <div class="chart-card">
-      <div class="chart-title">% Households in Stress by Tenure — 2001 to 2024</div>
-      <svg id="chart-v3c" class="chart-area" height="220"></svg>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Low vs High Income Burden Gap — widening over time</div>
-      <svg id="chart-v3b" class="chart-area" height="220"></svg>
+<!-- Trend over time -->
+<div class="section-label">Trend over time · all quintiles 2019–2025</div>
+<div class="trend-card">
+  <div class="chart-header">
+    <div class="chart-title-group">
+      <div class="chart-title">Housing cost burden trend — all years</div>
+      <div class="chart-sub">Each line = one income quintile · Click legend to isolate · Hover for values</div>
     </div>
   </div>
+  <div class="legend" id="ab-trendLegend"></div>
+  <div class="chart-wrap">
+    <div class="trend-canvas-holder">
+      <canvas id="ab-trendChart" role="img" aria-label="Line chart showing housing cost burden trend from 2019 to 2025 for each income quintile"></canvas>
+    </div>
+  </div>
+  <div class="source">Source: Stats NZ — Household Income and Housing-Cost Statistics, Year Ended June 2019–2025</div>
+</div>
+
+<!-- Heatmap -->
+<div class="section-label">Heatmap · burden intensity by quintile and year</div>
+<div class="heatmap-card">
+  <div class="chart-header">
+    <div class="chart-title-group">
+      <div class="chart-title">Cost burden heatmap — darker = higher share</div>
+      <div class="chart-sub">Each cell = % of disposable income spent on housing · Hover for detail</div>
+    </div>
+  </div>
+  <div class="heatmap-grid" id="ab-heatmapGrid"></div>
+  <div class="source">Source: Stats NZ — Household Income and Housing-Cost Statistics, Year Ended June 2019–2025</div>
+</div>
+
+</div><!-- /page -->
+  </div>
+  <div class="tooltip" id="ab-tooltip" style="position:fixed;z-index:9999;pointer-events:none;opacity:0;min-width:200px;max-width:240px;padding:14px 16px;border-radius:10px;box-shadow:0 6px 28px rgba(0,0,0,.4);background:var(--surface,#161b22);border:0.5px solid var(--border,#2d3748);font-family:var(--sans);font-size:13px;"></div>
 </section>
 
-<!-- ═══════════════════════════════════════
-     VIEW 4: DEBT & RATES
-═══════════════════════════════════════ -->
 <section class="section" id="v4">
   <div class="section-header">
     <div class="view-num">View 04 / 05 · Amreen Sulthana</div>
@@ -1697,7 +2049,7 @@ function applyTheme() {
     if (id === 'v0') drawDashboard();
     else if (id === 'v1') { drawV1(); drawV1b(); drawV1c(); drawV1d(); drawHeatmapV1(); }
     else if (id === 'v2') { drawRealMap(); updateMapFill(); updateMapLabels(); drawRegionList(); }
-    else if (id === 'v3') { drawWaffleV3(); drawSlopeV3(); drawStackV3(); drawV3a(); drawV3b(); drawV3c(); }
+    else if (id === 'v3') { if(typeof ab_rebuildAll==='function') ab_rebuildAll(); }
     else if (id === 'v4') { drawGaugesV4(); drawV4a(); drawV4b(); drawV4c(); setTimeout(am_buildChart, 80); }
     else if (id === 'v5') { drawV5a(); drawV5b(); }
   }
@@ -1886,9 +2238,12 @@ function showSection(id, btn) {
   btn.classList.add('active');
   // Use requestAnimationFrame after a short delay so the section is truly painted
   setTimeout(() => requestAnimationFrame(() => {
-    if (id === 'v0') drawDashboard();
+    if      (id === 'v0') drawDashboard();
+    else if (id === 'v1') { v1InitControls(); drawV1(); drawV1b(); drawV1c(); drawV1d(); drawHeatmapV1(); }
     else if (id === 'v2') { drawRealMap(); updateMapFill(); updateMapLabels(); drawRegionList(); }
-    else drawAll();
+    else if (id === 'v3') { if(typeof ab_rebuildAll==='function') ab_rebuildAll(); }
+    else if (id === 'v4') { drawGaugesV4(); drawV4a(); drawV4b(); drawV4c(); setTimeout(am_buildChart, 80); }
+    else if (id === 'v5') { calcDeposit(); drawV5a(); drawV5b(); }
   }), 20);
 }
 
@@ -2058,6 +2413,7 @@ window.setMetric = function(m, btn) {
 
 window.togglePlay = function() {
   const btn = document.getElementById('map-play-btn');
+  if (!btn) return;
   if (playInterval) {
     clearInterval(playInterval); playInterval = null;
     btn.textContent = '▶ Play'; btn.classList.remove('playing');
@@ -2069,7 +2425,8 @@ window.togglePlay = function() {
       setYear(MAP_YEARS[i]);
       if (i === MAP_YEARS.length-1) {
         clearInterval(playInterval); playInterval = null;
-        btn.textContent = '▶ Play'; btn.classList.remove('playing');
+        const b = document.getElementById('map-play-btn');
+        if (b) { b.textContent = '▶ Play'; b.classList.remove('playing'); }
       }
     }, 1200);
   }
@@ -2264,6 +2621,96 @@ function initMap() {
 
 
 // ═══════════════════════════════════════
+// VIEW 1 — JEEL FILTERS
+// ═══════════════════════════════════════
+let v1StartYear = 1990;
+let v1EndYear   = 2024;
+let v1ShowPrice  = true;
+let v1ShowIncome = true;
+let v1ShowRatio  = false;
+let v1ShowEvents = true;
+
+// Key events for annotation overlay
+const V1_EVENTS = [
+  { year: 1991, label: '73% ownership\n(NZ peak)',  color: '#22c55e' },
+  { year: 2003, label: 'P/I crosses 5×',           color: '#f0a500' },
+  { year: 2008, label: 'GFC — prices dip',          color: '#3b82f6' },
+  { year: 2013, label: 'Auckland crisis',           color: '#ef4444' },
+  { year: 2020, label: 'COVID: rates → 3.8%',       color: '#f97316' },
+  { year: 2021, label: 'Peak $849K',                color: '#b91c1c' },
+  { year: 2022, label: 'Rate hike cycle',           color: '#f0a500' },
+];
+
+function v1InitControls() {
+  const sy = document.getElementById('v1-start-year');
+  const ey = document.getElementById('v1-end-year');
+  if (!sy || !ey) return;
+  sy.innerHTML = '';
+  ey.innerHTML = '';
+  DATA.years.forEach(y => {
+    sy.add(new Option(y, y));
+    ey.add(new Option(y, y));
+  });
+  sy.value = v1StartYear;
+  ey.value = v1EndYear;
+}
+
+function v1ReadFilters() {
+  const sy = document.getElementById('v1-start-year');
+  const ey = document.getElementById('v1-end-year');
+  if (sy) v1StartYear = +sy.value;
+  if (ey) v1EndYear   = +ey.value;
+  if (v1EndYear < v1StartYear) { v1EndYear = v1StartYear; if(ey) ey.value = v1EndYear; }
+  const sp = document.getElementById('v1-show-price');
+  const si = document.getElementById('v1-show-income');
+  const sr = document.getElementById('v1-show-ratio');
+  const se = document.getElementById('v1-show-events');
+  if (sp) v1ShowPrice  = sp.checked;
+  if (si) v1ShowIncome = si.checked;
+  if (sr) v1ShowRatio  = sr.checked;
+  if (se) v1ShowEvents = se.checked;
+
+  // Update range label and legend visibility
+  const lbl = document.getElementById('v1-chart-range-lbl');
+  if (lbl) lbl.textContent = `${v1StartYear} – ${v1EndYear} · REINZ prices · Stats NZ household income`;
+  const lp = document.getElementById('v1-leg-price');
+  const li = document.getElementById('v1-leg-income');
+  if (lp) lp.style.opacity = v1ShowPrice  ? '1' : '0.2';
+  if (li) li.style.opacity = v1ShowIncome ? '1' : '0.2';
+}
+
+function v1UpdateFilters() {
+  v1ReadFilters();
+  drawV1(); drawV1b(); drawV1c(); drawV1d(); drawHeatmapV1();
+}
+
+function v1ResetFilters() {
+  v1StartYear = 1990; v1EndYear = 2024;
+  v1ShowPrice = true; v1ShowIncome = true; v1ShowRatio = false; v1ShowEvents = true;
+  const sy = document.getElementById('v1-start-year');
+  const ey = document.getElementById('v1-end-year');
+  const sp = document.getElementById('v1-show-price');
+  const si = document.getElementById('v1-show-income');
+  const sr = document.getElementById('v1-show-ratio');
+  const se = document.getElementById('v1-show-events');
+  if (sy) sy.value = 1990;
+  if (ey) ey.value = 2024;
+  if (sp) sp.checked = true;
+  if (si) si.checked = true;
+  if (sr) sr.checked = false;
+  if (se) se.checked = true;
+  v1UpdateFilters();
+}
+
+// Returns filtered year indices respecting v1StartYear/v1EndYear
+function v1FilteredIndices() {
+  return DATA.years
+    .map((y, i) => ({ y, i }))
+    .filter(o => o.y >= v1StartYear && o.y <= v1EndYear)
+    .map(o => o.i);
+}
+
+// ═══════════════════════════════════════
 // VIEW 1 — PRICE vs INCOME (rich)
 // ═══════════════════════════════════════
 function drawV1() {
@@ -2275,16 +2722,27 @@ function drawV1() {
   const g = svg.append('g').attr('transform',`translate(${m.l},${m.t})`);
   const defs = svg.append('defs');
 
-  const x = d3.scaleLinear().domain([1990,2024]).range([0,w]);
-  const y = d3.scaleLinear().domain([0,950000]).range([h,0]);
+  // Use filtered indices
+  const idxs = v1FilteredIndices();
+  const filtYears  = idxs.map(i => DATA.years[i]);
+  const filtPrices = idxs.map(i => DATA.prices[i]);
+  const filtInc    = idxs.map(i => DATA.incomes[i]);
+  const filtRatios = idxs.map(i => DATA.ratios[i]);
+  const filtMax    = Math.max(...filtPrices) * 1.08;
+  const xDomain    = [filtYears[0], filtYears[filtYears.length-1]];
 
-  // Crisis zone shading
-  const crisisStart = x(2003);
-  g.append('rect').attr('x',crisisStart).attr('y',0).attr('width',w-crisisStart).attr('height',h)
-    .attr('fill','rgba(239,68,68,0.07)');
-  g.append('text').attr('x',crisisStart+6).attr('y',h-8).attr('font-family','Space Mono').attr('font-size','9px').attr('fill','rgba(239,68,68,0.35)').text('CRISIS ZONE');
+  const x = d3.scaleLinear().domain(xDomain).range([0,w]);
+  const y = d3.scaleLinear().domain([0, filtMax]).range([h,0]);
 
-  // Gradient defs
+  // Crisis zone
+  if (xDomain[1] > 2003) {
+    const cs = Math.max(x(2003), 0);
+    g.append('rect').attr('x',cs).attr('y',0).attr('width',w-cs).attr('height',h)
+      .attr('fill','rgba(239,68,68,0.07)');
+    g.append('text').attr('x',cs+6).attr('y',h-8).attr('font-family','Space Mono').attr('font-size','9px').attr('fill','rgba(239,68,68,0.35)').text('CRISIS ZONE');
+  }
+
+  // Gradients
   ['priceGrad','incomeGrad'].forEach((id,i) => {
     const col = i===0 ? '#f0a500' : '#22c55e';
     const gr = defs.append('linearGradient').attr('id',id).attr('x1','0%').attr('y1','0%').attr('x2','0%').attr('y2','100%');
@@ -2292,74 +2750,105 @@ function drawV1() {
     gr.append('stop').attr('offset','100%').attr('stop-color',col).attr('stop-opacity',0);
   });
 
-  // Gap fill between price and income
-  const gapArea = d3.area()
-    .x((_,i)=>x(DATA.years[i]))
-    .y0((_,i)=>y(DATA.incomes[i]))
-    .y1((_,i)=>y(DATA.prices[i]))
-    .curve(d3.curveCatmullRom.alpha(0.5));
-  g.append('path').datum(DATA.prices).attr('d',gapArea).attr('fill','rgba(239,68,68,0.12)');
+  // Gap fill
+  if (v1ShowPrice && v1ShowIncome) {
+    const gapArea = d3.area()
+      .x((_,i)=>x(filtYears[i])).y0((_,i)=>y(filtInc[i])).y1((_,i)=>y(filtPrices[i]))
+      .curve(d3.curveCatmullRom.alpha(0.5));
+    g.append('path').datum(filtPrices).attr('d',gapArea).attr('fill','rgba(239,68,68,0.12)');
+  }
 
-  // Income area
-  const incArea = d3.area().x((_,i)=>x(DATA.years[i])).y0(h).y1((_,i)=>y(DATA.incomes[i])).curve(d3.curveCatmullRom.alpha(0.5));
-  g.append('path').datum(DATA.incomes).attr('d',incArea).attr('fill','url(#incomeGrad)');
+  // Income area + line
+  if (v1ShowIncome) {
+    const incArea = d3.area().x((_,i)=>x(filtYears[i])).y0(h).y1((_,i)=>y(filtInc[i])).curve(d3.curveCatmullRom.alpha(0.5));
+    g.append('path').datum(filtInc).attr('d',incArea).attr('fill','url(#incomeGrad)');
+    const il = g.append('path').datum(filtInc)
+      .attr('d',d3.line().x((_,i)=>x(filtYears[i])).y((_,i)=>y(filtInc[i])).curve(d3.curveCatmullRom.alpha(0.5)))
+      .attr('fill','none').attr('stroke','#22c55e').attr('stroke-width',2.5);
+    const L=il.node().getTotalLength(); il.attr('stroke-dasharray',L).attr('stroke-dashoffset',L).transition().duration(1200).ease(d3.easeQuadOut).attr('stroke-dashoffset',0);
+    const li = filtYears.length-1;
+    g.append('text').attr('x',x(filtYears[li])+6).attr('y',y(filtInc[li])+4).attr('font-family','Space Mono').attr('font-size','10px').attr('fill','#22c55e').text('$'+Math.round(filtInc[li]/1000)+'K');
+  }
 
-  // Price area
-  const prArea = d3.area().x((_,i)=>x(DATA.years[i])).y0(h).y1((_,i)=>y(DATA.prices[i])).curve(d3.curveCatmullRom.alpha(0.5));
-  g.append('path').datum(DATA.prices).attr('d',prArea).attr('fill','url(#priceGrad)');
+  // Price area + line
+  if (v1ShowPrice) {
+    const prArea = d3.area().x((_,i)=>x(filtYears[i])).y0(h).y1((_,i)=>y(filtPrices[i])).curve(d3.curveCatmullRom.alpha(0.5));
+    g.append('path').datum(filtPrices).attr('d',prArea).attr('fill','url(#priceGrad)');
+    const pl = g.append('path').datum(filtPrices)
+      .attr('d',d3.line().x((_,i)=>x(filtYears[i])).y((_,i)=>y(filtPrices[i])).curve(d3.curveCatmullRom.alpha(0.5)))
+      .attr('fill','none').attr('stroke','#f0a500').attr('stroke-width',2.5);
+    const L=pl.node().getTotalLength(); pl.attr('stroke-dasharray',L).attr('stroke-dashoffset',L).transition().duration(1200).ease(d3.easeQuadOut).attr('stroke-dashoffset',0);
+    const li = filtYears.length-1;
+    g.append('text').attr('x',x(filtYears[li])+6).attr('y',y(filtPrices[li])).attr('font-family','Space Mono').attr('font-size','10px').attr('fill','#f0a500').text('$'+Math.round(filtPrices[li]/1000)+'K');
+  }
 
-  // Gridlines
+  // Ratio overlay on right axis
+  if (v1ShowRatio) {
+    const yR = d3.scaleLinear().domain([0, Math.max(...filtRatios)*1.2]).range([h,0]);
+    const rLine = d3.line().x((_,i)=>x(filtYears[i])).y((_,i)=>yR(filtRatios[i])).curve(d3.curveCatmullRom.alpha(0.5));
+    g.append('path').datum(filtRatios).attr('d',rLine).attr('fill','none').attr('stroke','rgba(168,85,247,0.8)').attr('stroke-width',2).attr('stroke-dasharray','5,3');
+    g.append('g').attr('class','axis').attr('transform',`translate(${w},0)`).call(d3.axisRight(yR).ticks(5).tickFormat(d=>d+'×'));
+    g.append('text').attr('x',w+36).attr('y',-10).attr('font-family','Space Mono').attr('font-size','8px').attr('fill','rgba(168,85,247,0.8)').text('ratio');
+  }
+
+  // Gridlines + axes
   y.ticks(6).forEach(v=>{g.append('line').attr('class','grid-line').attr('x1',0).attr('x2',w).attr('y1',y(v)).attr('y2',y(v));});
-
-  // Axes
-  g.append('g').attr('class','axis').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickFormat(d3.format('d')).ticks(10));
+  g.append('g').attr('class','axis').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickFormat(d3.format('d')).ticks(Math.min(10, filtYears.length)));
   g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(6).tickFormat(d=>'$'+d3.format(',.0f')(d/1000)+'K'));
 
-  // Lines
-  const priceLine = d3.line().x((_,i)=>x(DATA.years[i])).y((_,i)=>y(DATA.prices[i])).curve(d3.curveCatmullRom.alpha(0.5));
-  const incomeLine = d3.line().x((_,i)=>x(DATA.years[i])).y((_,i)=>y(DATA.incomes[i])).curve(d3.curveCatmullRom.alpha(0.5));
+  // Gap annotation (only if both series shown and range wide enough)
+  if (v1ShowPrice && v1ShowIncome && v1EndYear >= 2021 && v1StartYear <= 2021) {
+    const gi21 = filtYears.indexOf(2021);
+    if (gi21 >= 0) {
+      const gapX=x(2021), gapTop=y(filtPrices[gi21]), gapBot=y(filtInc[gi21]);
+      const arrowDef=defs.append('marker').attr('id','arrowRed').attr('markerWidth',6).attr('markerHeight',6).attr('refX',3).attr('refY',3).attr('orient','auto');
+      arrowDef.append('path').attr('d','M0,0 L0,6 L6,3 z').attr('fill','rgba(239,68,68,0.5)');
+      g.append('line').attr('x1',gapX).attr('x2',gapX).attr('y1',gapTop+4).attr('y2',gapBot-4).attr('stroke','rgba(239,68,68,0.5)').attr('stroke-width',1.5).attr('marker-end','url(#arrowRed)');
+      const gapAmt = filtPrices[gi21]-filtInc[gi21];
+      g.append('text').attr('x',gapX+6).attr('y',(gapTop+gapBot)/2).attr('font-family','Space Mono').attr('font-size','9px').attr('fill','rgba(239,68,68,0.7)').text('$'+Math.round(gapAmt/1000)+'K gap');
+    }
+  }
 
-  const pl = g.append('path').datum(DATA.prices).attr('d',priceLine).attr('fill','none').attr('stroke','#f0a500').attr('stroke-width',2.5);
-  const il = g.append('path').datum(DATA.incomes).attr('d',incomeLine).attr('fill','none').attr('stroke','#22c55e').attr('stroke-width',2.5);
+  // Key event annotations (Jeel's feature — toggleable)
+  if (v1ShowEvents) {
+    V1_EVENTS.filter(ev => ev.year >= xDomain[0] && ev.year <= xDomain[1]).forEach(ev => {
+      g.append('line').attr('x1',x(ev.year)).attr('x2',x(ev.year)).attr('y1',0).attr('y2',h)
+        .attr('stroke',ev.color).attr('stroke-opacity',0.25).attr('stroke-dasharray','3,3').attr('stroke-width',1);
+      const lbl = ev.label.split('\n');
+      lbl.forEach((line, li) => {
+        g.append('text').attr('x',x(ev.year)+3).attr('y',14 + li*11)
+          .attr('font-family','Space Mono').attr('font-size','8px').attr('fill',ev.color).attr('opacity',0.65).text(line);
+      });
+    });
+  }
 
-  // Animate draw
-  [pl,il].forEach(p=>{ const L=p.node().getTotalLength(); p.attr('stroke-dasharray',L).attr('stroke-dashoffset',L).transition().duration(1200).ease(d3.easeQuadOut).attr('stroke-dashoffset',0); });
+  // Interactive crosshair + unified tooltip (Jeel's feature)
+  const crossV = g.append('line').attr('y1',0).attr('y2',h).attr('stroke',currentTheme==='light'?'rgba(0,0,0,0.15)':'rgba(255,255,255,0.2)').attr('stroke-width',1).attr('display','none');
+  const dotP = v1ShowPrice  ? g.append('circle').attr('r',5).attr('fill','#f0a500').attr('stroke',currentTheme==='light'?'#1e293b':'#fff').attr('stroke-width',1.5).attr('display','none') : null;
+  const dotI = v1ShowIncome ? g.append('circle').attr('r',5).attr('fill','#22c55e').attr('stroke',currentTheme==='light'?'#1e293b':'#fff').attr('stroke-width',1.5).attr('display','none') : null;
 
-  // End labels
-  const lastI = DATA.years.length-1;
-  g.append('text').attr('x',x(2024)+6).attr('y',y(DATA.prices[lastI])).attr('font-family','Space Mono').attr('font-size','10px').attr('fill','#f0a500').text('$775K');
-  g.append('text').attr('x',x(2024)+6).attr('y',y(DATA.incomes[lastI])+4).attr('font-family','Space Mono').attr('font-size','10px').attr('fill','#22c55e').text('$122K');
-
-  // Gap annotation arrow
-  const gapX = x(2021);
-  const gapTop = y(DATA.prices[DATA.years.indexOf(2021)]);
-  const gapBot = y(DATA.incomes[DATA.years.indexOf(2021)]);
-  g.append('line').attr('x1',gapX).attr('x2',gapX).attr('y1',gapTop+4).attr('y2',gapBot-4).attr('stroke','rgba(239,68,68,0.5)').attr('stroke-width',1.5).attr('marker-end','url(#arrowRed)');
-  g.append('text').attr('x',gapX+6).attr('y',(gapTop+gapBot)/2).attr('font-family','Space Mono').attr('font-size','9px').attr('fill','rgba(239,68,68,0.7)').text('$700K gap');
-
-  const arrowDef = defs.append('marker').attr('id','arrowRed').attr('markerWidth',6).attr('markerHeight',6).attr('refX',3).attr('refY',3).attr('orient','auto');
-  arrowDef.append('path').attr('d','M0,0 L0,6 L6,3 z').attr('fill','rgba(239,68,68,0.5)');
-
-  // Key event annotations
-  const events = [{y:2008,lbl:'GFC'},{y:2011,lbl:'Chch EQ'},{y:2020,lbl:'COVID'},{y:2021,lbl:'Peak'}];
-  events.forEach(ev=>{
-    g.append('line').attr('x1',x(ev.y)).attr('x2',x(ev.y)).attr('y1',0).attr('y2',h).attr('stroke','rgba(240,165,0,0.2)').attr('stroke-dasharray','3,3').attr('stroke-width',1);
-    g.append('text').attr('x',x(ev.y)+3).attr('y',14).attr('font-family','Space Mono').attr('font-size','8px').attr('fill','rgba(240,165,0,0.5)').text(ev.lbl);
-  });
-
-  // Interactive crosshair
-  const crossV = g.append('line').attr('y1',0).attr('y2',h).attr('stroke', currentTheme==="light"?'rgba(0,0,0,0.12)':'rgba(255,255,255,0.15)').attr('stroke-width',1).attr('display','none');
-  const dotP = g.append('circle').attr('r',5).attr('fill','#f0a500').attr('stroke', currentTheme==="light"?'#1e293b':'#fff').attr('stroke-width',1.5).attr('display','none');
-  const dotI = g.append('circle').attr('r',5).attr('fill','#22c55e').attr('stroke', currentTheme==="light"?'#1e293b':'#fff').attr('stroke-width',1.5).attr('display','none');
   const overlay = g.append('rect').attr('width',w).attr('height',h).attr('fill','none').attr('pointer-events','all');
-  overlay.on('mousemove',function(evt){
-    const [mx]=d3.pointer(evt);
-    const yr=Math.round(x.invert(mx)); const i=DATA.years.indexOf(Math.max(1990,Math.min(2024,yr))); if(i<0)return;
-    crossV.attr('display',null).attr('x1',x(DATA.years[i])).attr('x2',x(DATA.years[i]));
-    dotP.attr('display',null).attr('cx',x(DATA.years[i])).attr('cy',y(DATA.prices[i]));
-    dotI.attr('display',null).attr('cx',x(DATA.years[i])).attr('cy',y(DATA.incomes[i]));
-    tip(evt,`<strong>${DATA.years[i]}</strong>Price: ${fmt(DATA.prices[i])}<br>Income: ${fmt(DATA.incomes[i])}<br>Ratio: ${DATA.ratios[i]}×<br>Gap: ${fmt(DATA.prices[i]-DATA.incomes[i])}`);
-  }).on('mouseleave',()=>{tipOff();crossV.attr('display','none');dotP.attr('display','none');dotI.attr('display','none');});
+  overlay.on('mousemove', function(evt) {
+    const [mx] = d3.pointer(evt);
+    const yr = Math.round(x.invert(mx));
+    const clampedYr = Math.max(xDomain[0], Math.min(xDomain[1], yr));
+    const fi = filtYears.indexOf(clampedYr);
+    if (fi < 0) return;
+    crossV.attr('display',null).attr('x1',x(filtYears[fi])).attr('x2',x(filtYears[fi]));
+    if (dotP) dotP.attr('display',null).attr('cx',x(filtYears[fi])).attr('cy',y(filtPrices[fi]));
+    if (dotI) dotI.attr('display',null).attr('cx',x(filtYears[fi])).attr('cy',y(filtInc[fi]));
+    let tipHtml = `<strong>${filtYears[fi]}</strong>`;
+    if (v1ShowPrice)  tipHtml += `Price: ${fmt(filtPrices[fi])}<br>`;
+    if (v1ShowIncome) tipHtml += `Income: ${fmt(filtInc[fi])}<br>`;
+    if (filtInc[fi])  tipHtml += `Ratio: ${filtRatios[fi]}×<br>`;
+    if (v1ShowPrice && v1ShowIncome && filtInc[fi]) tipHtml += `Gap: ${fmt(filtPrices[fi]-filtInc[fi])}`;
+    tip(evt, tipHtml);
+  }).on('mouseleave', () => {
+    tipOff();
+    crossV.attr('display','none');
+    if (dotP) dotP.attr('display','none');
+    if (dotI) dotI.attr('display','none');
+  });
 }
 
 function drawV1b() {
@@ -2368,32 +2857,34 @@ function drawV1b() {
   const w=W-m.l-m.r, h=H-m.t-m.b;
   const svg=d3.select('#chart-v1b').attr('width',W).attr('height',H); svg.selectAll('*').remove();
   const g=svg.append('g').attr('transform',`translate(${m.l},${m.t})`);
-  const x=d3.scaleLinear().domain([1990,2024]).range([0,w]);
-  const y=d3.scaleLinear().domain([0,16]).range([h,0]);
 
-  // Colour-coded background bands
-  [{min:0,max:3,c:'rgba(34,197,94,0.06)'},{min:3,max:5,c:'rgba(240,165,0,0.06)'},{min:5,max:16,c:'rgba(239,68,68,0.06)'}].forEach(b=>{
-    g.append('rect').attr('x',0).attr('y',y(b.max)).attr('width',w).attr('height',y(b.min)-y(b.max)).attr('fill',b.c);
+  const idxs = v1FilteredIndices();
+  const filtYears  = idxs.map(i => DATA.years[i]);
+  const filtRatios = idxs.map(i => DATA.ratios[i]);
+  const xDomain = [filtYears[0], filtYears[filtYears.length-1]];
+
+  const x=d3.scaleLinear().domain(xDomain).range([0,w]);
+  const y=d3.scaleLinear().domain([0, Math.max(...filtRatios)*1.15]).range([h,0]);
+
+  [{min:0,max:3,c:'rgba(34,197,94,0.06)'},{min:3,max:5,c:'rgba(240,165,0,0.06)'},{min:5,max:y.domain()[1],c:'rgba(239,68,68,0.06)'}].forEach(b=>{
+    g.append('rect').attr('x',0).attr('y',y(b.max)).attr('width',w).attr('height',Math.max(0,y(b.min)-y(b.max))).attr('fill',b.c);
   });
-  // 5x line
-  g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(5)).attr('y2',y(5)).attr('stroke','rgba(239,68,68,0.5)').attr('stroke-dasharray','4,3').attr('stroke-width',1.5);
-  g.append('text').attr('x',4).attr('y',y(5)-4).attr('font-family','Space Mono').attr('font-size','8px').attr('fill','rgba(239,68,68,0.6)').text('Stress >5×');
-
+  if (y.domain()[1] > 5) {
+    g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(5)).attr('y2',y(5)).attr('stroke','rgba(239,68,68,0.5)').attr('stroke-dasharray','4,3').attr('stroke-width',1.5);
+    g.append('text').attr('x',4).attr('y',y(5)-4).attr('font-family','Space Mono').attr('font-size','8px').attr('fill','rgba(239,68,68,0.6)').text('Stress >5×');
+  }
   y.ticks(4).forEach(v=>g.append('line').attr('class','grid-line').attr('x1',0).attr('x2',w).attr('y1',y(v)).attr('y2',y(v)));
-  g.append('g').attr('class','axis').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickFormat(d3.format('d')).ticks(7));
+  g.append('g').attr('class','axis').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickFormat(d3.format('d')).ticks(Math.min(7, filtYears.length)));
   g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+'×'));
 
-  // Colour each bar segment by severity
-  DATA.years.forEach((yr,i)=>{
+  filtYears.forEach((yr,i)=>{
     if(i===0) return;
-    const col = DATA.ratios[i]>=10?'#7f1d1d':DATA.ratios[i]>=7?'#ef4444':DATA.ratios[i]>=5?'#f97316':'#f0a500';
-    g.append('rect').attr('x',x(DATA.years[i-1])).attr('y',y(DATA.ratios[i])).attr('width',x(yr)-x(DATA.years[i-1])).attr('height',h-y(DATA.ratios[i])).attr('fill',col).attr('opacity',0.7)
-      .on('mousemove',evt=>tip(evt,`<strong>${yr}</strong>P/I Ratio: ${DATA.ratios[i]}×`)).on('mouseleave',tipOff);
+    const col = filtRatios[i]>=10?'#7f1d1d':filtRatios[i]>=7?'#ef4444':filtRatios[i]>=5?'#f97316':'#f0a500';
+    g.append('rect').attr('x',x(filtYears[i-1])).attr('y',y(filtRatios[i])).attr('width',x(yr)-x(filtYears[i-1])).attr('height',h-y(filtRatios[i])).attr('fill',col).attr('opacity',0.7)
+      .on('mousemove',evt=>tip(evt,`<strong>${yr}</strong>P/I Ratio: ${filtRatios[i]}×`)).on('mouseleave',tipOff);
   });
-
-  // Line overlay
-  const line=d3.line().x((_,i)=>x(DATA.years[i])).y((_,i)=>y(DATA.ratios[i])).curve(d3.curveCatmullRom.alpha(0.5));
-  g.append('path').datum(DATA.ratios).attr('d',line).attr('fill','none').attr('stroke', currentTheme==="light"?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.5)').attr('stroke-width',1.5);
+  const line=d3.line().x((_,i)=>x(filtYears[i])).y((_,i)=>y(filtRatios[i])).curve(d3.curveCatmullRom.alpha(0.5));
+  g.append('path').datum(filtRatios).attr('d',line).attr('fill','none').attr('stroke',currentTheme==='light'?'rgba(0,0,0,0.4)':'rgba(255,255,255,0.5)').attr('stroke-width',1.5);
 }
 
 function drawV1c() {
@@ -3123,16 +3614,17 @@ function drawAll() {
   drawDashboard();
   drawV1(); drawV1b(); drawV1c(); drawV1d(); drawHeatmapV1();
   initMap();
-  drawWaffleV3(); drawSlopeV3(); drawStackV3(); drawV3a(); drawV3b(); drawV3c();
+  // V3 is handled by Abhay's Chart.js (ab_init called by showSection)
   drawGaugesV4(); drawV4a(); drawV4b(); drawV4c();
   calcDeposit(); drawV5a(); drawV5b();
 }
 
 window.addEventListener('load', () => {
+  v1InitControls();
   drawDashboard();
   drawV1(); drawV1b(); drawV1c(); drawV1d(); drawHeatmapV1();
   initMap();
-  drawWaffleV3(); drawSlopeV3(); drawStackV3(); drawV3a(); drawV3b(); drawV3c();
+  // V3 lazy-inits when tab is clicked (Chart.js needs visible canvas)
   drawGaugesV4(); drawV4a(); drawV4b(); drawV4c();
   calcDeposit(); drawV5a(); drawV5b();
 });
@@ -3377,7 +3869,7 @@ function am_jumpEra(min, max, btn) {
   am_updateRangeFill();
   if(am_activeEraBtn) am_activeEraBtn.classList.remove('active');
   if(am_activeEraBtn === btn) { am_activeEraBtn = null; }
-  else { btn.classList.add('active'); am_activeEraBtn = btn; }
+  else if (btn) { btn.classList.add('active'); am_activeEraBtn = btn; }
   am_buildChart();
 }
 
@@ -3396,7 +3888,7 @@ function am_toggleSeries(i) {
 function am_setGranularity(g, btn) {
   am_granularity = g;
   document.querySelectorAll('#btn-annual,#btn-monthly').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   document.getElementById('chart-sub').textContent = g === 'annual'
     ? 'Annual averages · Dual-axis · Left: Household debt % of GDP · Right: Mortgage rate (%)'
     : 'Monthly raw data · Dual-axis · Left: Household debt (quarterly, BIS) · Right: Mortgage rate (%)';
@@ -3559,11 +4051,537 @@ function am_setTheme(t, btn) {
     if (b.closest('.ctrl-group')?.querySelector('.ctrl-label')?.textContent === 'Theme')
       b.classList.remove('active');
   });
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   setTimeout(am_buildChart, 60);
 }
 
 window.addEventListener("load", () => setTimeout(()=>{if(document.getElementById("amreen-ch"))am_buildChart();},100));
+
+
+
+/* ── ABHAY VIEW 3 JS ── */
+
+/* ═══════ DATA (real Stats NZ) ═══════ */
+const ab_DATA = {
+  2019: [44.1, 38.1, 36.4, 24.1, 12.0],
+  2020: [40.6, 41.1, 37.5, 24.3, 11.3],
+  2021: [38.4, 42.9, 34.8, 22.6, 10.8],
+  2022: [33.5, 41.1, 34.5, 23.5,  9.6],
+  2023: [39.6, 44.5, 38.2, 25.0, 12.9],
+  2024: [41.3, 43.4, 42.2, 27.7, 15.6],
+  2025: [40.2, 47.5, 41.8, 28.0, 15.0]
+};
+
+const ab_INCOME_RANGES = {
+  2019: ['under $32,200','$32,200–$54,999','$55,000–$81,799','$81,800–$118,699','$118,700+'],
+  2020: ['under $34,000','$34,000–$57,299','$57,300–$85,099','$85,100–$120,199','$120,200+'],
+  2021: ['under $36,600','$36,600–$60,999','$61,000–$88,699','$88,700–$127,099','$127,100+'],
+  2022: ['under $37,900','$37,900–$64,799','$64,800–$93,999','$94,000–$134,899','$134,900+'],
+  2023: ['under $38,400','$38,400–$65,799','$65,800–$98,699','$98,700–$141,299','$141,300+'],
+  2024: ['under $40,800','$40,800–$68,499','$68,500–$103,699','$103,700–$151,699','$151,700+'],
+  2025: ['under $43,600','$43,600–$72,599','$72,600–$109,199','$109,200–$157,499','$157,500+']
+};
+
+const ab_ALL_YEARS  = [2019,2020,2021,2022,2023,2024,2025];
+const ab_BAR_YEARS  = [2019,2021,2023,2025];
+const ab_Q_NAMES    = ['Q1 Lowest','Q2 Second','Q3 Third','Q4 Fourth','Q5 Highest'];
+const ab_Q_SHORT    = ['Q1','Q2','Q3','Q4','Q5'];
+const ab_COLORS_L   = ['#C83A3A','#C47A1A','#7C4DC8','#2563A8','#A8C400'];
+const ab_COLORS_D   = ['#E85050','#E8A840','#AA7AE8','#5A9AE8','#A8C400'];
+
+const ab_isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+const ab_getColors = () => ab_isDark() ? ab_COLORS_D : ab_COLORS_L;
+const ab_getThresh30Color = () => ab_isDark() ? '#E87878' : '#8B1E1E';
+const ab_getThresh40Color = () => ab_isDark() ? '#E85050' : '#5A0A0A';
+const ab_getGridColor = () => ab_isDark() ? 'rgba(30,45,64,.8)' : 'rgba(212,216,226,.6)';
+const ab_getTextColor = () => ab_isDark() ? '#7A92AA' : '#4A5568';
+
+let ab_selectedYears = new Set([2019,2021,2023]);
+let ab_showThresh = {30:true, 40:false};
+let ab_hiddenQ = new Set();
+let ab_chartView = 'grouped';
+let ab_mainChart = null;
+let ab_trendChart = null;
+let ab_trendHiddenQ = new Set();
+
+/* ═══════ THEME ═══════ */
+function ab_setTheme(t, btn) {
+  if (t === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    const icon = document.getElementById('theme-icon');
+    if (icon) icon.textContent = '🌙';
+    if (typeof currentTheme !== 'undefined') window.currentTheme = 'light';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    const icon = document.getElementById('theme-icon');
+    if (icon) icon.textContent = '☀️';
+    if (typeof currentTheme !== 'undefined') window.currentTheme = 'dark';
+  }
+  document.querySelectorAll('#v3-abhay .theme-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  ab_rebuildAll();
+}
+
+/* ═══════ YEAR BUTTONS ═══════ */
+function ab_buildYearButtons(){
+  const g = document.getElementById('ab-yearGroup');
+  g.innerHTML = '';
+  ab_BAR_YEARS.forEach(y => {
+    const b = document.createElement('button');
+    b.className = 'toggle-btn' + (ab_selectedYears.has(y) ? ' active' : '');
+    b.textContent = y;
+    b.onclick = () => {
+      if(ab_selectedYears.has(y)){ if(ab_selectedYears.size > 1) ab_selectedYears.delete(y); }
+      else ab_selectedYears.add(y);
+      ab_buildYearButtons();
+      ab_updateMainChart();
+      ab_updateInsights();
+    };
+    g.appendChild(b);
+  });
+}
+
+/* ═══════ LEGEND (main chart) ═══════ */
+function ab_buildLegend(){
+  const el = document.getElementById('ab-legend');
+  el.innerHTML = '';
+  const colors = ab_getColors();
+  const latestY = Math.max(...[...ab_selectedYears]);
+  ab_Q_NAMES.forEach((q,i) => {
+    const range = ab_INCOME_RANGES[latestY]?.[i] || '';
+    const d = document.createElement('div');
+    d.className = 'leg-item' + (ab_hiddenQ.has(i) ? ' dimmed' : '');
+    d.innerHTML = `<span class="leg-swatch" style="background:${colors[i]}"></span>${q}<span class="leg-range">${range}</span>`;
+    d.onclick = () => {
+      if(ab_hiddenQ.has(i)) ab_hiddenQ.delete(i); else ab_hiddenQ.add(i);
+      ab_buildLegend();
+      ab_updateMainChart();
+    };
+    el.appendChild(d);
+  });
+}
+
+/* ═══════ LEGEND (trend chart) ═══════ */
+function ab_buildTrendLegend(){
+  const el = document.getElementById('ab-trendLegend');
+  el.innerHTML = '';
+  const colors = ab_getColors();
+  ab_Q_NAMES.forEach((q,i) => {
+    const d = document.createElement('div');
+    d.className = 'leg-item' + (ab_trendHiddenQ.has(i) ? ' dimmed' : '');
+    d.innerHTML = `<span class="leg-swatch" style="background:${colors[i]};height:3px;border-radius:2px;width:18px"></span>${q}`;
+    d.onclick = () => {
+      if(ab_trendHiddenQ.has(i)) ab_trendHiddenQ.delete(i); else ab_trendHiddenQ.add(i);
+      ab_buildTrendLegend();
+      ab_updateTrendChart();
+    };
+    el.appendChild(d);
+  });
+}
+
+/* ═══════ THRESHOLD TOGGLES ═══════ */
+function ab_toggleThresh(n){
+  ab_showThresh[n] = !ab_showThresh[n];
+  const btn = document.getElementById('ab-btn'+n);
+  if (btn) btn.classList.toggle('on-'+n, ab_showThresh[n]);
+  ab_updateMainChart();
+}
+
+/* ═══════ VIEW TOGGLE ═══════ */
+function ab_setView(v, btn){
+  ab_chartView = v;
+  document.querySelectorAll('#ab-viewGrouped,#ab-viewStacked').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  ab_updateMainChart();
+}
+
+/* ═══════ MAIN CHART ═══════ */
+function ab_updateMainChart(){
+  if(ab_mainChart){ ab_mainChart.destroy(); ab_mainChart = null; }
+  const colors = ab_getColors();
+  const yrs = [...ab_selectedYears].sort();
+  const textColor = ab_getTextColor();
+  const gridColor = ab_getGridColor();
+
+  const datasets = [];
+  const visibleQ = [0,1,2,3,4].filter(i => !ab_hiddenQ.has(i));
+
+  if(ab_chartView === 'grouped'){
+    yrs.forEach(y => {
+      visibleQ.forEach(qi => {
+        datasets.push({
+          label: `${ab_Q_SHORT[qi]} · ${y}`,
+          data: ab_Q_NAMES.map((_,j) => j === qi ? ab_DATA[y][qi] : null),
+          backgroundColor: colors[qi] + 'CC',
+          hoverBackgroundColor: colors[qi],
+          borderRadius: 3,
+          barPercentage: 0.78,
+          categoryPercentage: 0.88,
+          _qi: qi, _year: y
+        });
+      });
+    });
+  } else {
+    yrs.forEach((y,yi) => {
+      visibleQ.forEach(qi => {
+        datasets.push({
+          label: `${ab_Q_SHORT[qi]} · ${y}`,
+          data: [ab_DATA[y][qi]],
+          backgroundColor: colors[qi] + 'CC',
+          hoverBackgroundColor: colors[qi],
+          borderRadius: yi === 0 ? 3 : 0,
+          stack: `stack-${y}`,
+          barPercentage: 0.7,
+          categoryPercentage: 0.85,
+        });
+      });
+    });
+  }
+
+  const annotations = {};
+  if(ab_showThresh[30]){
+    annotations.t30 = {
+      type:'line', yMin:30, yMax:30,
+      borderColor: ab_getThresh30Color(),
+      borderWidth:1.5, borderDash:[6,4],
+      label:{
+        display:true, content:'30% stress',
+        position:'end', color: ab_getThresh30Color(),
+        backgroundColor: ab_isDark() ? 'rgba(30,16,16,.85)' : 'rgba(245,232,232,.9)',
+        font:{family:"'DM Mono',monospace",size:10},
+        padding:{x:6,y:3}, borderRadius:3
+      }
+    };
+  }
+  if(ab_showThresh[40]){
+    annotations.t40 = {
+      type:'line', yMin:40, yMax:40,
+      borderColor: ab_getThresh40Color(),
+      borderWidth:1.5, borderDash:[3,3],
+      label:{
+        display:true, content:'40% severe',
+        position:'end', color: ab_getThresh40Color(),
+        backgroundColor: ab_isDark() ? 'rgba(42,16,16,.85)' : 'rgba(240,216,216,.9)',
+        font:{family:"'DM Mono',monospace",size:10},
+        padding:{x:6,y:3}, borderRadius:3
+      }
+    };
+  }
+
+  const ctx = document.getElementById('ab-mainChart').getContext('2d');
+  ab_mainChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ab_chartView === 'stacked' ? yrs.map(String) : ab_Q_NAMES.map(n=>n.replace(' ','\n')),
+      datasets
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 350, easing: 'easeOutCubic' },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false, external: ab_externalTooltipHandler },
+        annotation: { annotations }
+      },
+      scales: {
+        x: {
+          stacked: ab_chartView === 'stacked',
+          grid: { display: false },
+          border: { display: false },
+          ticks: { color: textColor, font: { family:"'Instrument Sans',system-ui,sans-serif", size:11, weight:'500' }, maxRotation:0 }
+        },
+        y: {
+          stacked: ab_chartView === 'stacked',
+          min: 0, max: ab_chartView === 'stacked' ? 220 : 58,
+          grid: { color: gridColor, lineWidth: 0.5 },
+          border: { display: false },
+          ticks: {
+            color: textColor,
+            font: { family:"'DM Mono','Courier New',monospace", size:10 },
+            callback: v => v + '%',
+            stepSize: ab_chartView === 'stacked' ? 40 : 10
+          }
+        }
+      },
+      interaction: { mode: 'index', intersect: false }
+    }
+  });
+
+  document.getElementById('ab-barSub').textContent =
+    'Years: ' + yrs.join(', ') + ' · Stats NZ Household Income & Housing-Cost Statistics';
+}
+
+/* ═══════ TREND CHART ═══════ */
+function ab_updateTrendChart(){
+  if(ab_trendChart){ ab_trendChart.destroy(); ab_trendChart = null; }
+  const colors = ab_getColors();
+  const textColor = ab_getTextColor();
+  const gridColor = ab_getGridColor();
+
+  const datasets = ab_Q_NAMES.map((q,qi) => ({
+    label: q,
+    data: ab_ALL_YEARS.map(y => ab_DATA[y][qi]),
+    borderColor: colors[qi],
+    backgroundColor: 'transparent',
+    borderWidth: qi === 0 ? 2.5 : 2,
+    pointRadius: 4,
+    pointHoverRadius: 6,
+    pointBackgroundColor: colors[qi],
+    pointBorderColor: ab_isDark() ? '#0F1924' : '#F9FAFB',
+    pointBorderWidth: 2,
+    tension: 0.35,
+    hidden: ab_trendHiddenQ.has(qi)
+  }));
+
+  const annotations = {};
+  if(ab_showThresh[30]){
+    annotations.t30 = {
+      type:'line', yMin:30, yMax:30,
+      borderColor: ab_getThresh30Color(), borderWidth:1, borderDash:[5,4],
+      label:{ display:true, content:'30%', position:'start', color:ab_getThresh30Color(),
+        backgroundColor:'transparent', font:{family:"'DM Mono',monospace",size:9}, padding:2 }
+    };
+  }
+
+  const ctx = document.getElementById('ab-trendChart').getContext('2d');
+  ab_trendChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: ab_ALL_YEARS.map(String), datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 400, easing: 'easeOutCubic' },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false, external: ab_trendTooltipHandler },
+        annotation: { annotations }
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor, lineWidth: 0.5 },
+          border: { display: false },
+          ticks: { color: textColor, font:{ family:"'DM Mono',monospace", size:10 } }
+        },
+        y: {
+          min: 0, max: 58,
+          grid: { color: gridColor, lineWidth: 0.5 },
+          border: { display: false },
+          ticks: { color: textColor, font:{ family:"'DM Mono',monospace", size:10 }, callback: v=>v+'%', stepSize:10 }
+        }
+      },
+      interaction: { mode: 'index', intersect: false }
+    }
+  });
+}
+
+/* ═══════ EXTERNAL TOOLTIPS ═══════ */
+function ab_externalTooltipHandler({ chart, tooltip }){
+  const el = document.getElementById('ab-tooltip');
+  if(tooltip.opacity === 0){ el.style.opacity = 0; return; }
+  const yrs = [...ab_selectedYears].sort();
+  const latestY = Math.max(...yrs);
+
+  // Find which quintile column is hovered
+  const dp = tooltip.dataPoints;
+  if(!dp || dp.length === 0){ el.style.opacity=0; return; }
+
+  // Determine quintile index from x label
+  const xLabel = tooltip.title?.[0] || '';
+  const qi = ab_Q_NAMES.findIndex(n => xLabel.replace('\n',' ') === n || n.startsWith(xLabel.split('\n')[0]));
+  if(qi < 0){ el.style.opacity=0; return; }
+
+  const colors = ab_getColors();
+  const range = ab_INCOME_RANGES[latestY]?.[qi] || '';
+  const dot = `<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${colors[qi]};margin-right:5px"></span>`;
+
+  let rows = '';
+  yrs.forEach(y => {
+    const v = ab_DATA[y][qi];
+    const over30 = v >= 30;
+    const over40 = v >= 40;
+    const badge = over40
+      ? `<span class="tt-badge tt-stress">severe</span>`
+      : over30 ? `<span class="tt-badge tt-stress">stressed</span>` : `<span class="tt-badge tt-afford">ok</span>`;
+    rows += `<div class="tt-row"><span class="tt-key">${y}</span><span class="tt-val">${v.toFixed(1)}%${badge}</span></div>`;
+  });
+
+  const change = yrs.length > 1 ? (ab_DATA[Math.max(...yrs)][qi] - ab_DATA[Math.min(...yrs)][qi]).toFixed(1) : null;
+  const changeStr = change !== null
+    ? `<div class="tt-row"><span class="tt-key">Change ${Math.min(...yrs)}→${Math.max(...yrs)}</span><span class="tt-val" style="color:${parseFloat(change)>0?ab_getThresh30Color():ab_isDark()?'#A8C400':'#3A6B00'}">${parseFloat(change)>0?'+':''}${change}pp</span></div>`
+    : '';
+
+  el.innerHTML = `
+    <div class="tt-head">${dot}${ab_Q_NAMES[qi]}</div>
+    <div class="tt-sub">${range} (${latestY})</div>
+    ${rows}${changeStr}
+  `;
+
+  ab_positionTooltip(el, chart.canvas);
+  el.style.opacity = 1;
+}
+
+function ab_trendTooltipHandler({ chart, tooltip }){
+  const el = document.getElementById('ab-tooltip');
+  if(tooltip.opacity === 0){ el.style.opacity = 0; return; }
+  const dp = tooltip.dataPoints;
+  if(!dp || dp.length === 0){ el.style.opacity=0; return; }
+  const year = tooltip.title?.[0];
+  const colors = ab_getColors();
+
+  let rows = '';
+  dp.filter(d => !ab_trendHiddenQ.has(d.datasetIndex)).forEach(d => {
+    const qi = d.datasetIndex;
+    const v = d.raw;
+    const dot = `<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${colors[qi]};margin-right:5px"></span>`;
+    const badge = v>=40?`<span class="tt-badge tt-stress">severe</span>`:v>=30?`<span class="tt-badge tt-stress">stressed</span>`:`<span class="tt-badge tt-afford">ok</span>`;
+    rows += `<div class="tt-row"><span class="tt-key">${dot}${ab_Q_SHORT[qi]}</span><span class="tt-val">${v.toFixed(1)}%${badge}</span></div>`;
+  });
+
+  el.innerHTML = `<div class="tt-head">Year ${year}</div><div class="tt-sub">Housing cost share</div>${rows}`;
+  ab_positionTooltip(el, chart.canvas);
+  el.style.opacity = 1;
+}
+
+function ab_positionTooltip(el, canvas){
+  const rect = canvas.getBoundingClientRect();
+  const x = rect.left + window.scrollX + rect.width / 2;
+  const y = rect.top + window.scrollY;
+  const tw = 230, th = 180;
+  const left = Math.min(x + 20, window.innerWidth - tw - 20);
+  const top = Math.max(y - 40, 10);
+  el.style.left = left + 'px';
+  el.style.top = top + 'px';
+}
+
+/* ═══════ HEATMAP ═══════ */
+function ab_buildHeatmap(){
+  const grid = document.getElementById('ab-heatmapGrid');
+  grid.innerHTML = '';
+  const colors = ab_getColors();
+
+  // Header row
+  const empty = document.createElement('div');
+  grid.appendChild(empty);
+  ab_ALL_YEARS.forEach(y => {
+    const d = document.createElement('div');
+    d.className = 'hm-year';
+    d.textContent = y;
+    grid.appendChild(d);
+  });
+
+  // Data rows
+  ab_Q_NAMES.forEach((q,qi) => {
+    const lbl = document.createElement('div');
+    lbl.className = 'hm-label';
+    lbl.textContent = ab_Q_SHORT[qi];
+    grid.appendChild(lbl);
+
+    ab_ALL_YEARS.forEach(y => {
+      const v = ab_DATA[y][qi];
+      const intensity = (v - 8) / (50 - 8); // normalise 8–50 range
+      const cell = document.createElement('div');
+      cell.className = 'hm-cell';
+      const col = colors[qi];
+      const alpha = 0.1 + intensity * 0.75;
+      cell.style.background = ab_hexToRgba(col, alpha);
+      cell.style.color = alpha > 0.45 ? (ab_isDark() ? '#fff' : '#fff') : (ab_isDark() ? '#7A92AA' : '#4A5568');
+      cell.innerHTML = `<span class="hm-val">${v.toFixed(1)}%</span>`;
+
+      // tooltip on hover
+      cell.addEventListener('mouseenter', e => {
+        const el = document.getElementById('ab-tooltip');
+        const range = ab_INCOME_RANGES[y]?.[qi] || '';
+        const over30 = v>=30, over40=v>=40;
+        const badge = over40?`<span class="tt-badge tt-stress">severe</span>`:over30?`<span class="tt-badge tt-stress">stressed</span>`:`<span class="tt-badge tt-afford">ok</span>`;
+        const dot = `<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${colors[qi]};margin-right:5px"></span>`;
+        el.innerHTML = `
+          <div class="tt-head">${dot}${q} · ${y}</div>
+          <div class="tt-sub">${range}</div>
+          <div class="tt-row"><span class="tt-key">Housing cost share</span><span class="tt-val">${v.toFixed(1)}%${badge}</span></div>
+          <div class="tt-row"><span class="tt-key">Above 30% threshold</span><span class="tt-val">${over30?'Yes':'No'}</span></div>
+        `;
+        const r = cell.getBoundingClientRect();
+        el.style.left = (r.right + 12) + 'px';
+        el.style.top  = (r.top + window.scrollY - 10) + 'px';
+        el.style.opacity = 1;
+      });
+      cell.addEventListener('mouseleave', () => {
+        document.getElementById('ab-tooltip').style.opacity = 0;
+      });
+      grid.appendChild(cell);
+    });
+  });
+}
+
+function ab_hexToRgba(hex, alpha){
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+/* ═══════ INSIGHTS ═══════ */
+function ab_updateInsights(){
+  const yrs = [...ab_selectedYears].sort();
+  const latest = Math.max(...yrs);
+  const d = ab_DATA[latest];
+  const q1 = d[0], q5 = d[4], gap = q1 - q5;
+
+  // Cover KPIs
+  document.getElementById('ab-coverKpis').innerHTML = `
+    <div class="kpi-chip stress"><b>${q1.toFixed(1)}%</b><span>Q1 cost burden (${latest})</span></div>
+    <div class="kpi-chip"><b>${q5.toFixed(1)}%</b><span>Q5 cost burden (${latest})</span></div>
+    <div class="kpi-chip"><b>+${gap.toFixed(1)}pp</b><span>Q1 vs Q5 gap</span></div>
+    <div class="kpi-chip"><b>${d.filter(v=>v>=30).length}/5</b><span>quintiles above 30%</span></div>
+  `;
+
+  document.getElementById('ab-insightYear').textContent = `latest selected year: ${latest}`;
+
+  // Trend since 2019
+  const d2019 = ab_DATA[2019];
+  const strip = document.getElementById('ab-insightStrip');
+
+  const q1Change = d[0] - d2019[0];
+  const q2Val = d[1];
+  const q5Change = d[4] - d2019[4];
+
+  strip.innerHTML = `
+    <div class="ins-card">
+      <div class="ins-val" style="color:var(--bar-q1)">${q1.toFixed(1)}%</div>
+      <div class="ins-label">Q1 lowest income<br>housing cost share (${latest})</div>
+      <span class="ins-delta ${q1Change>0?'delta-up':'delta-down'}">${q1Change>0?'▲':'▼'} ${Math.abs(q1Change).toFixed(1)}pp since 2019</span>
+    </div>
+    <div class="ins-card">
+      <div class="ins-val" style="color:var(--bar-q2)">${q2Val.toFixed(1)}%</div>
+      <div class="ins-label">Q2 second quintile now<br>highest burdened in ${latest}</div>
+      <span class="ins-delta delta-up">▲ Above Q1 since 2020</span>
+    </div>
+    <div class="ins-card">
+      <div class="ins-val" style="color:var(--bar-q5)">${q5.toFixed(1)}%</div>
+      <div class="ins-label">Q5 highest income<br>housing cost share (${latest})</div>
+      <span class="ins-delta ${q5Change>0?'delta-up':'delta-down'}">${q5Change>0?'▲':'▼'} ${Math.abs(q5Change).toFixed(1)}pp since 2019</span>
+    </div>
+  `;
+}
+
+/* ═══════ REBUILD ALL ═══════ */
+function ab_rebuildAll(){
+  ab_buildLegend();
+  ab_updateMainChart();
+  ab_buildTrendLegend();
+  ab_updateTrendChart();
+  ab_buildHeatmap();
+  ab_updateInsights();
+}
+
+/* ═══════ INIT ═══════ */
+// Lazy init - ab_init() called by showSection when V3 tab is clicked
+function ab_init() {
+  if (ab_init._done) { ab_rebuildAll(); return; }
+  ab_init._done = true;
+  ab_buildYearButtons();
+  ab_rebuildAll();
+}
+ab_init._done = false;
 
 
 </script>
